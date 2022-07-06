@@ -9,10 +9,10 @@ Technologies used;
 
 --------Important credentials.-------------
 
-Deplyment context path : /swamp
-Database name; swamp
-Database user name; swamp
-Database user password; swamp@2022
+Deplyment context path: /swamp
+Database name: swamp
+Database user name: swamp
+Database user password: swamp@2022
 
 
 
