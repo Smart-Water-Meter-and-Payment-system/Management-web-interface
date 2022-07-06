@@ -1,0 +1,133 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/pages/californiatemplate/template.xhtml">
+
+    <ui:define name="title">View Projects</ui:define>
+
+    <ui:define name="viewname">View Projects</ui:define>
+
+    <ui:define name="content">
+        <h:form id="userProjectView">
+            <div class="ui-g">
+                <div class="ui-g-12">
+                    <div class="card" style="height: 100px;">
+                        <h:outputText value="Filters" />
+                        <div class="ui-g-12" style="display: flex;">
+                            <div style="width: 500px;">
+                                <p:inputText id="searchField" placeholder="Search Term"
+                                             style="width: 100%;"
+                                             onkeypress="#{userProjectView.reloadFilterReset()}"
+                                             value="#{userProjectView.searchTerm}" />
+                            </div>
+                            <p:selectOneMenu id="sortField" style="margin-left: 20px;"
+                                             value="#{userProjectView.selectedSortField}"
+                                             converter="sortFieldConverter" var="sortField" effect="fade"
+                                             autoComplete="true" filter="true" scrollHeight="10"
+                                             filterMatchMode="startsWith">
+                                <f:selectItem itemLabel="--Select--" itemValue="#{null}" />
+                                <f:selectItems value="#{userProjectView.sortFields}" var="sortField"
+                                               itemLabel="#{sortField}" itemValue="#{sortField}" />
+                                <p:column>
+                                    <h:outputText value="#{sortField}" />
+                                </p:column>
+                            </p:selectOneMenu>
+                            <p:commandButton id="searchBtn" update="userProjectTable"
+                                             icon="fa fa-search" style="margin-left: 20px;"
+                                             actionListener="#{userProjectTable.reloadFilterReset()}" />
+                            <p:commandButton action="#{userProjectForm.getViewPath}"
+                                             process="@this" immediate="true" value="Assign Users to Project (form)"
+                                             style="margin:0 auto;">
+                                <f:setPropertyActionListener target="#{projectForm.model}"
+                                                             value="#{null}" />
+                            </p:commandButton>
+
+                        </div>
+                    </div>
+
+                    <div>
+                        <p:dataTable id="userProjectTable" var="model" value="#{userProjectView}"
+                                     widgetVar="userProjectTable"
+                                     paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+                                     paginator="true" lazy="true"
+                                     rows="#{userProjectView.maximumresultsPerpage}"
+                                     emptyMessage="#{userProjectView.dataEmptyMessage}"
+                                     paginatorPosition="bottom" paginatorAlwaysVisible="false"
+                                     rowIndexVar="row" reflow="true" styleClass="TableAlgnment">
+
+                            <f:facet name="header">
+                                <p:outputPanel styleClass="leftAlign">
+                                    <p:outputPanel styleClass="centerAlign">
+                                        <p:outputLabel value="#{userProjectView.totalRecords} records found"
+                                                       styleClass="white bold" /><br/>
+                                    </p:outputPanel>
+                                </p:outputPanel>
+                            </f:facet>
+
+                            <p:column width="30" headerText="No.">
+                                <h:outputText value="#{row + 1}" />
+                            </p:column>
+
+                            <p:column headerText="User Name">
+                                <h:outputText value="#{model.user.fullName}" />
+                            </p:column>
+
+                            <p:column headerText="Project Name">
+                                <h:outputText value="#{model.project.name}" />
+                            </p:column>
+
+                            <p:column headerText="Role Name">
+                                <h:outputText value="#{model.role.name}" />
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Project Status" />
+                                </f:facet>
+                                <h:outputText value="#{model.project.projectStatus}" />
+                            </p:column>
+
+
+
+                            <p:column headerText="Action" exportable="false" style="text-align: center" >
+                                <p:commandButton icon="fa fa-edit" title="Edit" immediate="true"
+                                                 styleClass="success-button"
+                                                 process="@this"
+                                                 action="#{userProjectForm.getViewPath}">
+                                    <f:setPropertyActionListener target="#{userProjectForm.model}"
+                                                                 value="#{model}" />
+                                </p:commandButton>
+
+                                <p:commandButton icon="fa fa-trash" title="Delete" immediate="true"
+                                                 styleClass="danger-button" style="margin-left: 5px"
+                                                 action="#{userProjectView.delete(model)}" process="@this"
+                                                 update="userProjectTable">
+                                    <p:confirm header="Confirmation"
+                                               message="You are about to delete a record. Do you wish to continue?"
+                                               icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </p:column>
+
+                        </p:dataTable>
+
+                        <p:blockUI block="userProjectView" trigger="searchBtn">
+                            <p:graphicImage value="/resources/images/workingicon.png" />
+                        </p:blockUI>
+                    </div>
+                </div>
+            </div>
+
+            <p:confirmDialog global="true">
+                <p:commandButton value="Yes" type="button"
+                                 styleClass="ui-confirmdialog-yes" icon="fa fa-thumbs-up" />
+                <p:commandButton value="No" type="button"
+                                 styleClass="ui-confirmdialog-no" icon="fa fa-thumbs-down" />
+            </p:confirmDialog>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>

@@ -1,0 +1,37 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Jul 6, 2021, 7:04:40 PM
+    Author     : HP
+*/
+
+.profile-image {
+   
+    width: 100px;
+    height: 100px;
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-image-small {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.big-card-numbers{
+    text-align: right !important;
+    align-items: flex-end;
+    padding-top: 10%;
+
+
+
+}

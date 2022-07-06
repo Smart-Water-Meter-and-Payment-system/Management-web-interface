@@ -1,0 +1,64 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/pages/californiatemplate/template.xhtml">
+	
+	<ui:define name="title">Submodule Form</ui:define>
+
+    <ui:define name="viewname">Submodule Form</ui:define>
+
+	<ui:define name="content">
+		<h:form id="submoduleForm">
+			<div class="ui-g-12 card">
+				<div class="ui-g">
+					<div class="ui-g-8" style="margin: 0 auto;">
+								
+					
+						<p:outputPanel styleClass="ui-fluid">
+							<div class="p-field">
+								<p:outputLabel for="module">Module</p:outputLabel>
+								<p:selectOneMenu id="module" value="#{submoduleForm.model.module}" 
+									converter="moduleConverter">
+									<f:selectItem itemLabel="Select module" itemValue="null" />
+									<f:selectItems var="module" itemLabel="#{module}"
+										value="#{submoduleForm.modules}" required="true"/>
+								</p:selectOneMenu>
+							</div>
+							
+							<div class="p-field">
+								<p:outputLabel for="name">Name</p:outputLabel>
+								<p:inputText id="name"
+									value="#{submoduleForm.model.name}" required="true"
+									placeholder="Enter Submodule Name" />
+							</div>
+							
+							<div class="p-field">
+								<p:outputLabel for="description">Description</p:outputLabel>
+								<p:inputTextarea id="description" row = "30" col = "10" required="true" 
+								placeholder="Enter Submodule Description" 
+								value="#{submoduleForm.model.description}"/>
+							</div>
+							
+						</p:outputPanel>
+						<div class="ui-g-12 rightAlign">
+							<p:commandButton id="saveBtn" action="#{submoduleForm.save}"
+								value="Save" update="submoduleForm" validateClient="true"
+								icon="fa fa-save"
+								styleClass="#{recordsCountController.formButtonColor}" />
+
+							<p:button value="Back" styleClass="red-btn" icon="fa fa-backward"
+								style="margin:0 10px;" ajax="false"
+								outcome="#{submoduleForm.parentView}" />
+						</div>
+
+						<p:blockUI block="submoduleForm" trigger="saveBtn">
+							<p:graphicImage value="/resources/images/workingicon.png" />
+						</p:blockUI>
+					</div>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>
