@@ -2,7 +2,7 @@
 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.pahappa.systems</groupId>
+	<groupId>org.swamp</groupId>
 	<artifactId>frontend</artifactId>
 	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
@@ -18,7 +18,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 
         <!-- Custom  models Dependencies -->
         <dependency>
-            <groupId>org.pahappa.systems</groupId>
+            <groupId>org.swamp</groupId>
             <artifactId>backend</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
@@ -286,7 +286,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>1.4</version>
+            <version>1.5.0-b01</version>
         </dependency>
 
         <dependency>
@@ -511,7 +511,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
     </dependencies>
     
     <build>
-        <finalName>PPMS-frontend</finalName>
+        <finalName>SWAMP-frontend</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

@@ -13,32 +13,20 @@
 			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 	</f:facet>
-	<title>Sign-in Pahappa</title>
+	<title>Sign-in SWAMP</title>
 </h:head>
-
-<div class="login-topbar">
-	<h:link outcome="/dashboard" styleClass="logo">
-		<!--             <p:graphicImage name="images/logo.png" library="california-layout" /> -->
-		<h1 style="color: white;">
-			<B>PPMS</B>
-		</h1>
-	</h:link>
-</div>
-<p:graphicImage styleClass="login-image" name="images/image-login.png"
-	library="california-layout" />
 
 <h:body styleClass="login-body #{guestPreferences.inputStyleClass}">
 	<h:form id="loginForm" prependId="false"
-		styleClass="login-panel ui-fluid">
-		<div class="p-grid">
+		styleClass="login-panel ui-fluid" style="margin-left: 27%;margin-top: -5%;position: relative;height: auto">
+		<div class="p-grid card p-shadow-20">
 			<div class="p-col-12 login-icon-container">
-				<p:graphicImage styleClass="login-icon" name="images/icon-login.png"
-					library="california-layout" />
+
 			</div>
-			<div class="p-col-12 p-lg-12 p-md-12 logo-container">
-				<span class="login-summary">Sign in</span>
-				<div class="login-detail">
-					<span>Welcome, please use the form to sign-in</span><b/>
+			<div class="p-col-12 p-lg-12 p-md-12 logo-container " style="text-align: center">
+				<span class="login-summary">SWAMP</span>
+				<div class="login-detail" style="text-align: center">
+					<span>Welcome back! <i class="fa fa-smile-o"/> Sign in to proceed</span><b/>
 				</div>
 			</div>
 			<div class="p-col-12 p-lg-12 p-md-12">
@@ -60,8 +48,9 @@
 				<p:outputLabel for="remember-me" value="Remember Me" />
 				<a href="#">Reset Password</a>
 			</div>
-			<div class="p-col-12 p-lg-12 p-md-12 button-container">
+			<div class="p-col-12 p-lg-12 p-md-12 button-container" style="text-align: right">
 				<p:commandButton id="login" value="Login" ajax="false"
+				styleClass="ui-button-raised ui-button-info"
 					validateClient="true" update="loginForm"
 					action="#{loginController.doLogin}" />
 			</div>

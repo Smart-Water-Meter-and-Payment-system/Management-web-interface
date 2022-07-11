@@ -8,15 +8,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
     </f:facet>
-    <title>PrimeFaces California - Error</title>
+    <title>PPMS - Error</title>
 </h:head>
 
 <h:body styleClass="exception-body">
 
     <div class="exception-topbar">
-        <h:link outcome="/dashboard" styleClass="logo">
-            <p:graphicImage name="images/logo.png" library="california-layout" />
-        </h:link>
+        <h:link outcome="/pages/dashboard/Dashboard" styleClass="logo">
+			<!-- <p:graphicImage name="images/logo.png" library="california-layout" /> -->
+			<h1 style="color: white;">
+				<B>PPMS</B>
+			</h1>
+		</h:link>
     </div>
             
     <p:graphicImage styleClass="exception-image" name="images/image-error.png" library="california-layout" />
@@ -29,7 +32,7 @@
 Try to search again or use the Go to Dashboard button below.
         </p>
         <div>
-            <p:button outcome="/dashboard" value="Go To Dashboard" />
+            <p:button outcome="/pages/dashboard/Dashboard" value="Go To Dashboard" />
         </div>
     </div>
     <h:outputStylesheet name="css/layout-#{guestPreferences.theme}.css" library="california-layout" />

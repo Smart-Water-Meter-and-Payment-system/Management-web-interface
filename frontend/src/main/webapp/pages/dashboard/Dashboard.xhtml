@@ -1,17 +1,17 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
-                xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:f="http://java.sun.com/jsf/core"
-                xmlns:ui="http://java.sun.com/jsf/facelets"
-                xmlns:p="http://primefaces.org/ui"
-                template="/pages/californiatemplate/template.xhtml">
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/pages/californiatemplate/template.xhtml">
 
-    <ui:define name="title">Dashboard</ui:define>
+	<ui:define name="title">Dashboard</ui:define>
 
-    <ui:define name="viewname">Dashboard</ui:define>
+	<ui:define name="viewname">Dashboard</ui:define>
 
-    <ui:define name="head">
-        <h:outputScript name="js/chart.js" library="demo"/>
-        <script type="text/javascript">
+	<ui:define name="head">
+		<h:outputScript name="js/chart.js" library="demo" />
+		<script type="text/javascript">
             $(function () {
                 var chart = new Chart(document.getElementById("chart").getContext('2d'), {
                     type: 'line',
@@ -35,47 +35,81 @@
                 });
             });
         </script>
-    </ui:define>
+	</ui:define>
 
-    <ui:define name="content">
-        <div class="dashboard">
-            <div class="p-grid">
-                <div class="p-col-12 p-md-12 p-lg-4">
-                    <div class="overview-box monthly-sales">
-                        <div class="overview-title">PROJECTS</div>
-                        <i class="pi pi-arrow-circle-up"/>
-                        <div class="overview-numbers">
-                            <strong>#{projectView.totalRecords}</strong>
-                        </div>
+	<ui:define name="content">
+		<div class="dashboard">
+			<div class="p-grid">
+				<div class="p-col-12 p-md-12 p-lg-3">
+					<p:commandLink value="" immediate="true" process="@this"
+						action="#">
+						<div class="overview-box monthly-sales">
+							<div class="overview-title">DODO</div>
+							<i class="pi pi-arrow-circle-up" />
+							<div class="overview-numbers">
+								<strong>DODO</strong>
+							</div>
 
-                        <p:graphicImage name="images/icon-sales.png" library="california-layout"/>
-                    </div>
-                </div>
-                <div class="p-col-12 p-md-12 p-lg-4">
-                    <div class="overview-box monthly-views">
-                        <div class="overview-title">TASKS
-                            <i class="pi pi-arrow-circle-down"/>
-                        </div>
-                        <div class="overview-numbers">
-                            <strong>#{taskView.totalRecords}</strong>
-                        </div>
+							<p:graphicImage name="images/icon-sales.png"
+								library="california-layout" />
+						</div>
+					</p:commandLink>
+				</div>
+				<div class="p-col-12 p-md-12 p-lg-3">
+					<p:commandLink value="" immediate="true" process="@this"
+						action="#"
+						rendered="#{(componentRenderer.administrator)}">
+						<div class="overview-box monthly-views">
+							<div class="overview-title">
+								DODO <i class="pi pi-arrow-circle-down" />
+							</div>
+							<div class="overview-numbers">
+								<strong>DODO</strong>
+							</div>
 
-                    </div>
-                </div>
-                <div class="p-col-12 p-md-12 p-lg-4">
-                    <div class="overview-box monthly-users">
-                        <div class="overview-title">USERS
-                            <i class="pi pi-arrow-circle-up"/>
-                        </div>
-                        <div class="overview-numbers">
-                            <strong>#{usersView.totalRecords}</strong>
-                        </div>
+						</div>
+					</p:commandLink>
+				</div>
 
-                        <p:graphicImage name="images/icon-users.png" library="california-layout"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </ui:define>
+				<div class="p-col-12 p-md-12 p-lg-3">
+					<p:commandLink value="" immediate="true" process="@this"
+						action="#{usersView.getViewPath}" rendered="#{(componentRenderer.administrator)}">
+						<div class="overview-box monthly-users">
+							<div class="overview-title">
+								USERS <i class="pi pi-arrow-circle-up" />
+							</div>
+							<div class="overview-numbers">
+								<strong>#{dashboard.userTotalRecords}</strong>
+							</div>
+
+							<p:graphicImage name="images/icon-users.png"
+								library="california-layout" />
+						</div>
+					</p:commandLink>
+				</div>
+				<div class="p-col-12 p-md-12 p-lg-3">
+					<p:commandLink value="" immediate="true" process="@this"
+						action="#" rendered="#{(componentRenderer.administrator)}">
+						<f:setPropertyActionListener target="" value="" />
+						<div class="overview-box monthly-sales">
+							<div class="overview-title">DODO</div>
+							<i class="pi pi-arrow-circle-up" />
+							<div class="overview-numbers">
+								<strong>
+									<h:outputText
+										value="">
+										<f:convertNumber groupingUsed="true" />
+									</h:outputText>
+								</strong>
+							</div>
+
+							<p:graphicImage name="images/icon-sales.png"
+								library="california-layout" />
+						</div>
+					</p:commandLink>
+				</div>
+			</div>
+		</div>
+	</ui:define>
 
 </ui:composition>
