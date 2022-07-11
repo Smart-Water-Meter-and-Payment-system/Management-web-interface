@@ -3,13 +3,17 @@ package org.swamp.backend.core.services.impl;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.sers.webutils.model.RecordStatus;
+import org.sers.webutils.model.exception.ValidationFailedException;
 import org.sers.webutils.model.migrations.Migration;
 import org.sers.webutils.model.security.Permission;
 import org.sers.webutils.model.security.Role;
+import org.sers.webutils.model.security.User;
 import org.sers.webutils.server.core.dao.PermissionDao;
 import org.sers.webutils.server.core.dao.RoleDao;
+import org.sers.webutils.server.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +28,9 @@ public class CustomPermissionRoleMigrations {
 
 	@Autowired
 	RoleDao roleDao;
+	
+	@Autowired
+	UserService userService;
 
 	@Migration(orderNumber = 1)
 	public void savePermissions() {
@@ -49,6 +56,23 @@ public class CustomPermissionRoleMigrations {
 				}
 			}
 		}
-		
+	}
+	
+	@Migration(orderNumber = 2)
+	public void updateDefaultAdmin() {
+		for(User user : userService.getUsersByRoleName(Role.DEFAULT_ADMIN_ROLE)) {
+			if(user.getLastName().equals("Administrator") && user.getFirstName().equals("System")) {
+				Set<Role> roles = new HashSet<Role>();
+				roles.add(roleDao.searchUniqueByPropertyEqual("name", "ROLE_ADMINISTRATOR"));
+				roles.add(roleDao.searchUniqueByPropertyEqual("name", "SWAMP Super Administrator"));
+				user.setRoles(roles);
+				try {
+					userService.saveUser(user);
+					System.out.println("===System Admin Updated===");
+				} catch (ValidationFailedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 }
