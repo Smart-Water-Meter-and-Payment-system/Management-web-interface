@@ -7,10 +7,10 @@
 
 	<session-factory>
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.url">jdbc:mysql://localhost:3306/ppms</property>
+		<property name="connection.url">jdbc:mysql://localhost:3306/swamp</property>
 		<!-- -->
-		<property name="connection.username">pahappa</property>
-		 <property name="connection.password">pass@2020@Pahappa</property> 
+		<property name="connection.username">swamp</property>
+		 <property name="connection.password">swamp@2022</property> 
 
 		
 		<!-- <property name="connection.pool_size">1054</property> -->
@@ -51,16 +51,14 @@
 			class="org.sers.webutils.model.bgtasks.MethodParameter" />
 		<mapping
 			class="org.sers.webutils.model.bgtasks.MethodParameter" />
+			
 		
-<!--		<mapping class="org.pahappa.systems.ppms.backend.models.SystemSetting" />		
-		<mapping class="org.pahappa.systems.ppms.backend.models.MailSetting" />  -->
-		<mapping class="org.pahappa.systems.ppms.backend.models.project.ProjectType" />
-		<mapping class="org.pahappa.systems.ppms.backend.models.project.Project" />
-		<mapping class="org.pahappa.systems.ppms.backend.models.modules.Module" />
-		<mapping class="org.pahappa.systems.ppms.backend.models.modules.Submodule" />
-		<mapping class="org.pahappa.systems.ppms.backend.models.modules.Task" />
-		<mapping class="org.pahappa.systems.ppms.backend.models.UserProject" />
-
-
+		<mapping class="org.swamp.backend.models.customer.Customer" /> 
+		<mapping class="org.swamp.backend.models.customer.Fingerprint" /> 
+		<mapping class="org.swamp.backend.models.houseHoldBalance.HouseHoldBalance" /> 
+		<mapping class="org.swamp.backend.models.meter.Meter" /> 
+		<mapping class="org.swamp.backend.models.transactionRecord.TransactionRecord" /> 
+		<mapping class="org.swamp.backend.models.waterChargeRate.WaterChargeRate" />
+		
 	</session-factory>
 </hibernate-configuration>

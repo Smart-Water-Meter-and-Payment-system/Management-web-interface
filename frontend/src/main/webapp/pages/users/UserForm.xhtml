@@ -6,7 +6,7 @@
                 template="/pages/californiatemplate/template.xhtml">
 
     <ui:define name="content">
-        <ui:fragment rendered="#{!akmsRenderer.administrator}">
+        <ui:fragment rendered="#{!componentRenderer.administrator}">
             <div class="ui-g ui-fluid">
                 <div class="ui-g-12">
                     <div class="exception-topbar">
@@ -30,7 +30,7 @@
             </div>
         </ui:fragment>
 
-        <h:form id="userForm" rendered="#{akmsRenderer.administrator}">
+        <h:form id="userForm" rendered="#{componentRenderer.administrator}">
             <div class="ui-g">
                 <div class="ui-g-12">
                     <div>
@@ -75,6 +75,16 @@
                                                          placeholder="Enter user's emailaddress"
                                                          style="padding: 10px; font-size: 20px; width: 80%;" />
                                         </div>
+                                        <div class="ui-g-6">
+                                            <h:outputText value="User's Rate/Hr" style="font-size: 18px;" />
+                                            <br />
+											<p:inputNumber required="true"
+												value="#{userForm.customPropOne}"
+												placeholder="Enter user's rate/hr"
+												style="padding: 10px; font-size: 20px; width: 80%;"
+												symbol=" UGX/HRS" symbolPosition="s" padControl="false"
+												thousandSeparator="," />
+										</div>
                                         <div class="ui-g-6">
                                             <h:outputText value="Password" style="font-size: 18px;" />
                                             <br />

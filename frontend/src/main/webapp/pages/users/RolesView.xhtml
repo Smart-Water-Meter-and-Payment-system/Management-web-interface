@@ -6,9 +6,9 @@
 	xmlns:p="http://primefaces.org/ui"
 	template="/pages/californiatemplate/template.xhtml">
 
-	<ui:define name="title">View Roles</ui:define>
+	<ui:define name="title">Roles</ui:define>
 
-	<ui:define name="viewname">View Roles</ui:define>
+	<ui:define name="viewname">Roles</ui:define>
 
 	<ui:define name="content">
 		<ui:fragment rendered="#{!(componentRenderer.administrator)}">
@@ -25,7 +25,7 @@
 							name="images/icon-access.png" library="freya-layout" />
 						<h1 class="exception-summary">Access Denied</h1>
 						<p class="exception-detail">
-							You don't have the necessary permissons.<br></br> Role the
+							You don't have the necessary permissons.<br></br> Contact the
 							administrator for more information.
 						</p>
 					</div>
@@ -38,20 +38,26 @@
 			rendered="#{ (componentRenderer.administrator) }">
 			<div class="p-grid ">
 				<div class="p-col-12">
-					<div class="card">
+					<div class="card p-shadow-1" style="height: 70px">
 						<p:growl id="messages" showDetail="true" />
 						<div class="p-d-flex p-jc-between" style="margin: 5px">
 							<div>
 								<p:inputText id="searchTerm" required="false"
-									placeholder="Search for roles..."
-									onkeyup="#{rolesView.reloadFilterReset()}"
+									placeholder="Search for roles..." 
+									onkeypress="#{rolesView.reloadFilterReset()}"
 									value="#{rolesView.searchTerm}" />
 							</div>
 							<div>
-								<p:commandButton icon="fa fa-search"
-									styleClass="p-mr-2 p-mb-2 primary-button" id="searchBtn"
-									actionListener="#{clientsView.reloadFilterReset()}"
-									value="Search">
+								<p:commandButton icon="fa fa-search" title="Search" update=":rolesView:rolesTable"
+									styleClass="p-mr-2 p-mb-2 ui-button-success" id="searchBtn"
+									actionListener="#{rolesView.reloadFilterReset()}">
+								</p:commandButton>
+								
+								<p:commandButton icon="fa fa-plus" title="New"
+									styleClass="success-button" style="margin-left: 5px"
+									oncomplete="PF('selectedRoleDialogue').show()"
+									validateClient="true" update=":rolesView:selectedRoleDialogue"
+									actionListener="#{rolesView.loadSelectedRole(null)}">
 								</p:commandButton>
 							</div>
 						</div>
@@ -60,9 +66,7 @@
 			</div>
 			<div class="p-grid ">
 				<div class="p-col-12">
-					<div class="card">
-
-
+					<div class="card p-shadow-1">
 						<p:dataTable id="rolesTable" var="model" value="#{rolesView}"
 							widgetVar="rolesTable"
 							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
@@ -75,22 +79,15 @@
 							<f:facet name="header">
 								<div class="p-d-flex p-jc-between">
 									<div>
-										<span style="font-weight: bold">Roles</span>
+										<span style="font-weight: bold">Roles (#{rolesView.totalRecords})</span>
 
 									</div>
 									<div>
-
 										<p:commandButton value="Export" process="rolesTable"
-											icon="pi pi-upload" styleClass="help-button" ajax="false">
+											icon="fa fa-download" styleClass="ui-button-help"
+											ajax="false">
 											<p:dataExporter type="pdf" target="rolesTable"
 												fileName="roles" />
-										</p:commandButton>
-										<p:commandButton icon="fa fa-plus" value="Add New"
-											styleClass="success-button" style="margin-left: 5px"
-											oncomplete="PF('selectedRoleDialogue').show()"
-											validateClient="true"
-											update=":rolesView:selectedRoleDialogue"
-											actionListener="#{rolesView.loadSelectedRole(null)}">
 										</p:commandButton>
 									</div>
 								</div>
@@ -118,7 +115,14 @@
 								<f:facet name="header">
 									<h:outputText value="Permisions" />
 								</f:facet>
-								<h:outputText value="#{model.permissions.size()}" />
+								<p:commandLink id="basic" value="#{model.permissions.size()}" type="button"
+									style="text-decoration: underline" />
+								<p:overlayPanel for="basic"
+									style="width:-300px; position: absolute" dismissable="true"
+									showCloseIcon="true">
+									<h:outputText value="#{model.permissions}" />
+								</p:overlayPanel>
+
 							</p:column>
 
 							<p:column headerText="Action" exportable="false"
@@ -131,10 +135,11 @@
 								</p:commandButton>
 
 								<p:commandButton icon="fa fa-trash" title="Delete role"
-									styleClass="danger-button" style="margin-left: 5px"
-									action="#{rolesView.delete(model)}" update="rolesTable">
+									styleClass="ui-button ui-button-danger"
+									style="margin-left: 5px" action="#{rolesView.delete(model)}"
+									update="rolesTable">
 									<p:confirm header="Confirmation"
-										message="You are about to delete a role. Do you wish to continue?"
+										message="You are about to delete #{model.name} role Do you wish to continue?"
 										icon="ui-icon-alert" />
 								</p:commandButton>
 							</p:column>
@@ -150,8 +155,9 @@
 			</div>
 			<p:dialog id="selectedRoleDialogue" widgetVar="selectedRoleDialogue"
 				height="300px" width="60%"
-				header="#{(rolesView.selectedRole != null and rolesView.selectedRole.name != null)? rolesView.selectedRole.name:'New Role'}"
+				header="#{(rolesView.selectedRole != null and rolesView.selectedRole.name != null)? rolesView.selectedRole.name:'Role Form'}"
 				minHeight="40" showEffect="fade" modal="true">
+				<hr />
 				<p:outputPanel id="rolesForm"
 					rendered="#{rolesView.selectedRole!=null}">
 					<div class="p-grid ui-fluid">
@@ -197,7 +203,7 @@
 						<p:commandButton icon="pi pi-check" process="@form"
 							actionListener="#{rolesView.saveSelectedRole()}"
 							oncomplete="PF('selectedRoleDialogue').hide()"
-							update="rolesTable" value="Save" />
+							update="rolesTable" value="Save" style="margin-left: 90%" />
 					</div>
 				</f:facet>
 

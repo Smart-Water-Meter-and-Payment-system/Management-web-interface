@@ -36,16 +36,16 @@
 
 	<!-- Project specific beans -->
 	<context:component-scan
-		base-package="org.pahappa.systems.ppms.backend.core.services.impl" />
+		base-package="org.swamp.backend.core.services.impl" />
 	<context:component-scan
-		base-package="org.pahappa.systems.ppms.backend.core.dao.impl" />
+		base-package="org.swamp.backend.core.dao.impl" />
 
 	<bean id="dataSource"
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
-		<property name="url" value="jdbc:mysql://localhost:3306/ppms" />
-		<property name="username" value="pahappa" />
-		<property name="password" value="pass@2020@Pahappa" />
+		<property name="url" value="jdbc:mysql://localhost:3306/swamp" />
+		<property name="username" value="swamp" />
+		<property name="password" value="swamp@2022" />
 	</bean>
 
 	<bean id="sessionFactory"
@@ -84,7 +84,7 @@
 				<value>org.sers.webutils.model.security</value>
 				<value>org.sers.webutils.model.migrations</value>
 				<value>org.sers.webutils.model.bgtasks</value>
-				<value>org.pahappa.systems.ppms.backend.models</value>
+				<value>org.swamp.backend.models</value>
 			</list>
 		</property>
 	</bean>
