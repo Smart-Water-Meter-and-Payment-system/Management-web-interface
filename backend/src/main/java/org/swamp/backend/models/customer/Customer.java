@@ -9,12 +9,21 @@ import javax.persistence.Table;
 import org.sers.webutils.model.BaseEntity;
 import org.swamp.backend.models.meter.Meter;
 
+/**
+ * This model will hold details for the customers that registered with the system
+ * @author ttc
+ *
+ */
 @Entity
 @Table(name = "customers")
 public class Customer extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
+	
+	//the user's phone number
 	private String phoneNumber;
+	
+	//the meter from which the user registered themselves from
 	private Meter meterId;
 	
 	@Column(name = "phone_number", nullable = false, columnDefinition = "varchar(10)")

@@ -12,12 +12,21 @@ import javax.persistence.Table;
 import org.sers.webutils.model.BaseEntity;
 import org.swamp.backend.models.customer.Customer;
 
+/**
+ * This model will store all the balance that is left by the users so that they can reuse it
+ * @author Collins
+ *
+ */
 @Entity
 @Table(name = "house_hold_balances")
 public class HouseHoldBalance extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
+	
+	//the user who owns the balance
 	private Customer userId;
+	
+	//the total balance that was left
 	private BigDecimal balance = BigDecimal.ZERO;
 	
 	@Id

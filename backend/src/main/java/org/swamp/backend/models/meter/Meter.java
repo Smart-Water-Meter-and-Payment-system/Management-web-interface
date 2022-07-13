@@ -11,13 +11,24 @@ import org.sers.webutils.model.security.User;
 
 import com.itextpdf.awt.geom.Point;
 
+/**
+ * This model will store details of meters that have been bought and installed
+ * @author Collins
+ *
+ */
 @Entity
 @Table(name = "meters")
 public class Meter extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
+	
+	//the GPS coordinates of the meter's location
 	private Point gpsCoordinates;
+	
+	//the region in which the meter has been installed
 	private String regionName;
+	
+	//the owner of the meter
 	private User userId;
 	
 	@Column(name = "gps_coordinates", nullable = true)
