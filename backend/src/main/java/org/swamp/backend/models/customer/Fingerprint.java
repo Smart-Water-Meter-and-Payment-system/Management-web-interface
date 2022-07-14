@@ -9,12 +9,21 @@ import javax.persistence.Table;
 
 import org.sers.webutils.model.BaseEntity;
 
+/**
+ * This model will hold all fingerprints for the users that register with the system
+ * @author Collins
+ *
+ */
 @Entity
 @Table(name = "fingerprints")
 public class Fingerprint extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
+	
+	//the user's fingerprint
 	private byte[] fingerprint;
+	
+	//the user to whom the fingerprint belongs
 	private Customer userId;
 	
 	@ManyToOne

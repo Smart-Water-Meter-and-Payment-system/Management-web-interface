@@ -11,13 +11,25 @@ import javax.persistence.Table;
 import org.sers.webutils.model.BaseEntity;
 import org.swamp.backend.models.meter.Meter;
 
+/**
+ * This model will hold all transaction records. Every time a user transacts with the system, the
+ * record will be stored here.
+ * @author Collins
+ *
+ */
 @Entity
 @Table(name = "transaction_records")
 public class TransactionRecord extends BaseEntity {
 
 	private static final long serialVersionUID = 1L;
+	
+	//the amount of money that was used in the transaction
 	private BigDecimal amountPaid = BigDecimal.ZERO;
+	
+	//the quantity of water that was collected during the transaction
 	private BigDecimal waterVolumeCollected = BigDecimal.ZERO;
+	
+	//the meter/system from which the transaction happened
 	private Meter meterId;
 	
 	@Column(name = "amount_paid", columnDefinition = "Decimal(6,2) default'0.00'")
