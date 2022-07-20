@@ -44,6 +44,11 @@
 									placeholder="Search for users ..."
 									onkeypress="#{usersView.reloadFilterReset()}"
 									value="#{usersView.searchTerm}" />
+								<p:selectCheckboxMenu id="roles"
+									value="#{usersView.selectedRoles}" converter="roleConverter"
+									label="--Select Roles--" style="margin-left: 5px">
+									<f:selectItems value="#{usersView.roles}" />
+								</p:selectCheckboxMenu>
 							</div>
 							<div>
 								<p:commandButton icon="fa fa-search" title="Search"
@@ -249,7 +254,7 @@
 										value="#{usersView.selectedRolesList}"
 										converter="roleConverter"
 										rendered="#{!selectedUser.hasAdministrativePrivileges()}"
-										layout="grid" columns="3" styleClass="grid-checkbox"
+										layout="grid" columns="3" styleClass="grid-checkbox" multiple="true"
 										label="--Select Role(s)--" filter="true" filterMatchMode="startsWith">
 										<f:selectItems value="#{usersView.rolesList}" var="role"
 											itemLabel="#{role}" itemValue="#{role}" />

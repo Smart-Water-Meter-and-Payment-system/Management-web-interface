@@ -17,6 +17,7 @@ import org.sers.webutils.server.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.swamp.backend.models.security.PermissionConstants;
 import org.swamp.backend.models.security.SWAMPPermissionInterpreter;
 
 @Service
@@ -68,11 +69,12 @@ public class CustomPermissionRoleMigrations {
 				user.setRoles(roles);
 				try {
 					userService.saveUser(user);
-					System.out.println("===System Admin Updated===");
+					System.out.println("===System Admin Role Updated===");
 				} catch (ValidationFailedException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
+	
 }

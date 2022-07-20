@@ -1,5 +1,7 @@
 package org.swamp.backend.models.meter;
 
+import java.math.BigDecimal;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -9,34 +11,29 @@ import javax.persistence.Table;
 import org.sers.webutils.model.BaseEntity;
 import org.sers.webutils.model.security.User;
 
-import com.itextpdf.awt.geom.Point;
-
 @Entity
 @Table(name = "meters")
 public class Meter extends BaseEntity {
 
-	private static final long serialVersionUID = 1L;
-	private Point gpsCoordinates;
-	private String regionName;
+private static final long serialVersionUID = 1L;
+	
+	//country where meter is installed
+	private String countryName;
+	
+	//city where the meter is installed
+	private String cityName;
+	
+	//longitude of the location of the meter
+	private BigDecimal longitude = BigDecimal.ZERO;
+	
+	//latitude of the location of the meter
+	private BigDecimal latitude = BigDecimal.ZERO;
+	
+	//the owner of the meter
 	private User userId;
 	
-	@Column(name = "gps_coordinates", nullable = true)
-	public Point getGpsCoordinates() {
-		return gpsCoordinates;
-	}
-	
-	public void setGpsCoordinates(Point gpsCoordinates) {
-		this.gpsCoordinates = gpsCoordinates;
-	}
-	
-	@Column(name = "region_name", nullable = false, columnDefinition = "varchar(20)")
-	public String getRegionName() {
-		return regionName;
-	}
-	
-	public void setRegionName(String regionName) {
-		this.regionName = regionName;
-	}
+	//the public IP for the meter
+	private String publicIp;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id", nullable = true)
@@ -48,6 +45,51 @@ public class Meter extends BaseEntity {
 		this.userId = userId;
 	}
 	
+	@Column(name = "country_name", nullable = false, columnDefinition = "varchar(50)")
+	public String getCountryName() {
+		return countryName;
+	}
+
+	public void setCountryName(String countryName) {
+		this.countryName = countryName;
+	}
+
+	@Column(name = "city_name", nullable = false, columnDefinition = "varchar(50)")
+	public String getCityName() {
+		return cityName;
+	}
+
+	public void setCityName(String cityName) {
+		this.cityName = cityName;
+	}
+
+	@Column(name = "longitude", columnDefinition = "Decimal(6,2) default'0.00'")
+	public BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+
+	@Column(name = "latitude", columnDefinition = "Decimal(6,2) default'0.00'")
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+	
+	@Column(name = "public_ip")
+	public String getPublicIp() {
+		return publicIp;
+	}
+
+	public void setPublicIp(String publicIp) {
+		this.publicIp = publicIp;
+	}
+
 	@Override
 	public String toString() {
 		return this.getId();
