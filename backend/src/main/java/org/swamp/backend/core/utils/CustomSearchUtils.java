@@ -2,13 +2,13 @@ package org.swamp.backend.core.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.utils.SortField;
+import org.swamp.backend.models.meter.Meter;
 
 import com.googlecode.genericdao.search.Filter;
 import com.googlecode.genericdao.search.Search;
@@ -64,8 +64,13 @@ public class CustomSearchUtils {
 		return search;
     }
 
-    public static Search generateSearchObjectForUsers(String query, SortField sortField) {
+    public static Search generateSearchObjectForUsers(String query, SortField sortField, List<String> roleIds) {
         Search search = generateSearchTerms(query, Arrays.asList("username", "firstName", "lastName", "emailAddress"));
+        
+        //searching for user permission
+        if(roleIds != null && !roleIds.isEmpty())
+        	search.addFilterSome("roles", Filter.in("id", roleIds));
+        
 		return addSortField(sortField, search);
     }
     
@@ -73,6 +78,27 @@ public class CustomSearchUtils {
         Search search = generateSearchTerms(query, Arrays.asList("name", "description"));
 		return addSortField(sortField, search);
     }
+    
+    public static Search generateSearchObjectForMeters(String query, SortField sortField, List<String> userIds) {
+    	Search search = generateSearchTerms(query, Arrays.asList("countryName", "cityName"));
+    	
+        //searching for owners
+        if(userIds != null && !userIds.isEmpty())
+        	search.addFilterIn("userId.id", userIds);
+    	
+    	return addSortField(sortField, search);
+    }
+    
+    public static Search generateSearchObjectForCustomers(String query, SortField sortField, List<Meter> meters) {
+    	Search search = generateSearchTerms(query, Arrays.asList("phoneNumber"));
+    	
+        //searching for meters
+        if(meters != null && !meters.isEmpty())
+        	search.addFilterIn("meter.id", meters);
+    	
+    	return addSortField(sortField, search);
+    }
+
 
 }
 

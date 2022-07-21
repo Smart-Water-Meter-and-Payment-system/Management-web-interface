@@ -2,11 +2,11 @@ package org.swamp.backend.models.houseHoldBalance;
 
 import java.math.BigDecimal;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.sers.webutils.model.BaseEntity;
@@ -29,9 +29,8 @@ public class HouseHoldBalance extends BaseEntity {
 	//the total balance that was left
 	private BigDecimal balance = BigDecimal.ZERO;
 	
-	@Id
-	@ManyToOne
-	@JoinColumn(name = "user_id", nullable = true)
+	@OneToOne(cascade = CascadeType.MERGE)
+	@JoinColumn(name = "user_id", nullable = true, referencedColumnName = "id")
 	public Customer getUserId() {
 		return userId;
 	}

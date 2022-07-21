@@ -9,9 +9,13 @@ import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 import org.swamp.backend.core.services.MeterService;
 import org.swamp.backend.models.meter.Meter;
 
+/**
+ * 
+ * @author Collins
+ * 
+ */
 @FacesConverter("meterConverter")
 public class MeterConverter implements Converter {
-	
 	@Override
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) {
 		if (arg2 == null || arg2.isEmpty())
@@ -26,5 +30,4 @@ public class MeterConverter implements Converter {
 			return null;
 		return ((Meter) object).getId();
 	}
-
 }

@@ -6,8 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -30,7 +28,6 @@ import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 import org.sers.webutils.server.core.utils.MailService;
 import org.sers.webutils.server.shared.SharedAppData;
 import org.swamp.backend.core.utils.CustomSearchUtils;
-import org.swamp.backend.core.utils.EmailClient;
 import org.swamp.frontend.security.HyperLinks;
 import org.swamp.frontend.security.UiUtils;
 
@@ -48,6 +45,7 @@ public class UsersView extends PaginatedTableView<User, UsersView, UsersView> {
     private Set<Role> selectedRolesList= new HashSet<>();
     private MailService mailservice;
     private int customPropOneNumber;
+    private List<Role> roles, selectedRoles = new ArrayList<Role>();
     
     @PostConstruct
     @Override
@@ -57,20 +55,29 @@ public class UsersView extends PaginatedTableView<User, UsersView, UsersView> {
         this.rolesList=ApplicationContextProvider.getApplicationContext().getBean(RoleService.class).getRoles();
         this.genders= Arrays.asList(Gender.values());
         this.customPropOneNumber = 0;
+        this.roles = ApplicationContextProvider.getApplicationContext().getBean(RoleService.class).getRoles();
     }
 
     @Override
     public void reloadFromDB(int offset, int limit, Map<String, Object> filters) throws Exception {
+    	List<String> roleIds = new ArrayList<String>();
+		for(Role role : this.selectedRoles) {
+			roleIds.add(role.getId());
+		}
         if (SharedAppData.getLoggedInUser() != null && SharedAppData.getLoggedInUser().hasPermission(org.sers.webutils.model.security.PermissionConstants.PERM_ADMINISTRATOR)) {
-            super.setDataModels(userService.getUsers(CustomSearchUtils.generateSearchObjectForUsers(this.searchTerm, null), offset, limit));
+            super.setDataModels(userService.getUsers(CustomSearchUtils.generateSearchObjectForUsers(this.searchTerm, null, roleIds), offset, limit));
         }
     }
 
     @Override
     public void reloadFilterReset() {
+		List<String> roleIds = new ArrayList<String>();
+		for(Role role : this.selectedRoles) {
+			roleIds.add(role.getId());
+		}
         if (SharedAppData.getLoggedInUser() != null && SharedAppData.getLoggedInUser().hasPermission(org.sers.webutils.model.security.PermissionConstants.PERM_ADMINISTRATOR)) {
             super.setTotalRecords(
-                    this.userService.countUsers(CustomSearchUtils.generateSearchObjectForUsers(this.searchTerm, null)));
+                    this.userService.countUsers(CustomSearchUtils.generateSearchObjectForUsers(this.searchTerm, null, roleIds)));
             this.resetInput();
         }
     }
@@ -100,17 +107,17 @@ public class UsersView extends PaginatedTableView<User, UsersView, UsersView> {
             PrimeFaces.current().executeScript("PF('selected_user_dialog').hide()");
             PrimeFaces.current().ajax().update("usersView:usersTable");
             
-            ExecutorService service = Executors.newFixedThreadPool(1);
-            service.submit(new Runnable() {
-				@Override
-				public void run() {
-					try {
-						EmailClient.sendMail(recipient, subject, emailContent);
-					} catch (Exception e) {
-						e.printStackTrace();
-					} 
-				}
-			});
+//            ExecutorService service = Executors.newFixedThreadPool(1);
+//            service.submit(new Runnable() {
+//				@Override
+//				public void run() {
+//					try {
+//						EmailClient.sendMail(recipient, subject, emailContent);
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					} 
+//				}
+//			});
             
             UiUtils.showMessageBox("Action successful","SwampUser account created. Log-in details sent to user's email");
            // mailservice.sendPasswordChangeMail(this.selectedUser);
@@ -199,6 +206,22 @@ public class UsersView extends PaginatedTableView<User, UsersView, UsersView> {
 
 	public void setMailservice(MailService mailservice) {
 		this.mailservice = mailservice;
+	}
+
+	public List<Role> getSelectedRoles() {
+		return selectedRoles;
+	}
+
+	public void setSelectedRoles(List<Role> selectedRoles) {
+		this.selectedRoles = selectedRoles;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
     
 }

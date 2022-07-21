@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/pages/californiatemplate/template.xhtml">
+
+	<ui:define name="title">Customers</ui:define>
+
+	<ui:define name="viewname">Customers</ui:define>
+
+	<ui:define name="content">
+		<h:form id="customerView" prependId="false">
+			<div class="ui-g">
+				<div class="ui-g-12">
+					<ui:fragment id="customerSearch">
+						<div class="card p-shadow-1" style="height: 70px;">
+							<div class="ui-g-12" style="display: flex;">
+								<!-- For search term field -->
+								<p:inputText id="searchField" placeholder="Search Term"
+									style="width: 35%;"
+									onkeypress="#{customerView.reloadFilterReset()}"
+									value="#{customerView.searchTerm}" />
+								<p:selectOneMenu id="sortField"
+									style="margin-left: 5px; width: 30%"
+									value="#{customerView.selectedSortField}"
+									converter="sortFieldConverter" var="sortField" effect="fade"
+									autoComplete="true" filter="true" scrollHeight="10"
+									filterMatchMode="startsWith">
+									<f:selectItem itemLabel="--Select Order--" itemValue="#{null}" />
+									<f:selectItems value="#{customerView.sortFields}"
+										var="sortField" itemLabel="#{sortField}"
+										itemValue="#{sortField}" />
+									<p:column>
+										<h:outputText value="#{sortField}" />
+									</p:column>
+								</p:selectOneMenu>
+								<p:selectCheckboxMenu id="meters"
+									value="#{customerView.selectedMeters}"
+									converter="meterConverter" label="--Select Meters--"
+									style="margin-left: 5px">
+									<f:selectItems value="#{customerView.meters}" var="meter"
+									itemLabel="#{meter.publicIp}" itemValue="#{meter}" />
+								</p:selectCheckboxMenu>
+								<p:commandButton id="searchBtn" update="customerTable"
+									icon="fa fa-search" style="margin-left: 5px;" title="Search"
+									styleClass="ui-button ui-button-success"
+									actionListener="#{customerView.reloadFilterReset()}" />
+							</div>
+						</div>
+					</ui:fragment>
+
+					<div class="p-shadow-2">
+						<p:dataTable id="customerTable" var="model"
+							value="#{customerView}" widgetVar="customerTable"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							paginator="true" lazy="true"
+							rows="#{customerView.maximumresultsPerpage}"
+							emptyMessage="#{customerView.dataEmptyMessage}"
+							paginatorPosition="bottom" paginatorAlwaysVisible="false"
+							rowIndexVar="row" reflow="true" styleClass="TableAlignment"
+							style="">
+
+							<f:facet name="header">
+								<div class="p-d-flex p-jc-between">
+									<div>
+										
+									</div>
+									<div>
+										<span style="font-weight: bold">#{customerView.totalRecords} 
+										Customer(s) Found</span>
+									</div>
+									<div>
+										<p:commandButton value="Export" process="customerTable"
+											style="margin-left: 10px;" icon="fa fa-download" ajax="false"
+											styleClass="ui-button ui-button-help">
+
+											<p:dataExporter type="pdf" target="customerTable"
+												fileName="customers" />
+										</p:commandButton>
+									</div>
+								</div>
+							</f:facet>
+
+							<p:column width="30" headerText="No.">
+								<h:outputText value="#{row + 1}" />
+							</p:column>
+
+							<p:column headerText="Phone Number">
+								<h:outputText value="#{model.phoneNumber}" />
+							</p:column>
+
+							<p:column headerText="Meter Registered From">
+								<h:outputText value="#{model.meterId.publicIp}" />
+							</p:column>
+							
+							<p:column headerText="Balance">
+								<h:outputText value="#{model.householdBalance}"
+									style="float:right">
+									<f:convertNumber groupingUsed="true" />
+								</h:outputText>
+							</p:column>
+
+						</p:dataTable>
+
+						<p:blockUI block="customerView" trigger="searchBtn">
+							<p:graphicImage value="/resources/images/workingicon.png" />
+						</p:blockUI>
+					</div>
+				</div>
+			</div>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes ui-button ui-button-info"
+					icon="fa fa-thumbs-up" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no ui-button ui-button-"
+					icon="fa fa-thumbs-down" />
+			</p:confirmDialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

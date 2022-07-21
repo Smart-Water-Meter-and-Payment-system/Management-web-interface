@@ -1,0 +1,184 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/pages/californiatemplate/template.xhtml">
+
+	<ui:define name="title">Meters</ui:define>
+
+	<ui:define name="viewname">Meters</ui:define>
+
+	<ui:define name="content">
+		<h:form id="meterView" prependId="false">
+			<div class="ui-g">
+				<div class="ui-g-12">
+					<ui:fragment id="meterSearch">
+						<div class="card p-shadow-1" style="height: 70px;">
+							<div class="ui-g-12" style="display: flex;">
+								<!-- For search term field -->
+								<p:inputText id="searchField" placeholder="Search Term"
+									style="width: 35%;"
+									onkeypress="#{meterView.reloadFilterReset()}"
+									value="#{meterView.searchTerm}" />
+								<p:selectOneMenu id="sortField"
+									style="margin-left: 5px; width: 35%"
+									value="#{meterView.selectedSortField}"
+									converter="sortFieldConverter" var="sortField" effect="fade"
+									autoComplete="true" filter="true" scrollHeight="10"
+									filterMatchMode="startsWith">
+									<f:selectItem itemLabel="--Select Order--" itemValue="#{null}" />
+									<f:selectItems value="#{meterView.sortFields}"
+										var="sortField" itemLabel="#{sortField}"
+										itemValue="#{sortField}" />
+									<p:column>
+										<h:outputText value="#{sortField}" />
+									</p:column>
+								</p:selectOneMenu>
+								<p:commandButton id="searchBtn" update="meterTable"
+									icon="fa fa-search" style="margin-left: 5px;" title="Search"
+									styleClass="ui-button ui-button-success"
+									actionListener="#{meterView.reloadFilterReset()}" />
+
+								<p:commandButton icon="fa fa-plus" process="@this"
+									styleClass="ui-button-info" style="margin-left: 5px"
+									oncomplete="PF('meter_dialog').show()" title="New"
+									validateClient="true" update="meterForm" immediate="true"
+									actionListener="#{meterView.loadSelectedMeter(null)}">
+								</p:commandButton>
+								
+							</div>
+						</div>
+					</ui:fragment>
+
+					<div class="p-shadow-2">
+						<p:dataTable id="meterTable" var="model"
+							value="#{meterView}" widgetVar="meterTable"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+							paginator="true" lazy="true"
+							rows="#{meterView.maximumresultsPerpage}"
+							emptyMessage="#{meterView.dataEmptyMessage}"
+							paginatorPosition="bottom" paginatorAlwaysVisible="false"
+							rowIndexVar="row" reflow="true" styleClass="TableAlignment"
+							style="">
+
+							<f:facet name="header">
+								<div class="p-d-flex p-jc-between">
+									<div>
+										
+									</div>
+									<div>
+										<span style="font-weight: bold">#{meterView.totalRecords} 
+										Meter(s) Found</span>
+									</div>
+									<div>
+										<p:commandButton value="Export" process="meterTable"
+											style="margin-left: 10px;" icon="fa fa-download" ajax="false"
+											styleClass="ui-button ui-button-help">
+
+											<p:dataExporter type="pdf" target="meterTable"
+												fileName="meters" />
+										</p:commandButton>
+									</div>
+								</div>
+							</f:facet>
+
+							<p:column width="30" headerText="No.">
+								<h:outputText value="#{row + 1}" />
+							</p:column>
+
+							<p:column headerText="Owner">
+								<h:outputText value="#{model.userId.fullName}" />
+							</p:column>
+
+							<p:column headerText="City">
+								<h:outputText value="#{model.cityName}" />
+							</p:column>
+							
+							<p:column headerText="Public IP">
+								<h:outputText value="#{model.publicIp}" />
+							</p:column>
+							
+							<p:column headerText="Longitude">
+								<h:outputText value="#{model.longitude}" />
+							</p:column>
+							
+							<p:column headerText="Latitude">
+								<h:outputText value="#{model.latitude}" />
+							</p:column>
+
+							<p:column headerText="Action" exportable="false"
+								style="text-align: center">
+
+								<p:commandButton icon="fa fa-edit" title="Edit"
+									styleClass="ui-button ui-button-info" process="@this"
+									actionListener="#{meterView.loadSelectedMeter(model)}"
+									oncomplete="PF('meter_dialog').show()" update="meterForm">
+								</p:commandButton>
+							</p:column>
+
+						</p:dataTable>
+
+						<p:blockUI block="meterView" trigger="searchBtn">
+							<p:graphicImage value="/resources/images/workingicon.png" />
+						</p:blockUI>
+					</div>
+					<p:dialog widgetVar="meter_dialog" height="250px"
+						width="500px"
+						header="Meter Registration Form"
+						minHeight="40" showEffect="fade" modal="true">
+						<p:outputPanel id="meterForm" styleClass="ui-fluid">
+							<p:outputPanel>
+								<div class="p-field">
+									<p:outputLabel for="owner">Owner</p:outputLabel>
+									<p:selectOneMenu id="owner"
+										value="#{meterView.selectedUserId}"
+										converter="userConverter" effect="fade"
+										autoComplete="true" filter="true" scrollHeight="10"
+										filterMatchMode="contains">
+										<f:selectItem itemLabel="--Select Owner--" itemValue="#{null}" />
+										<f:selectItems value="#{meterView.users}" var="user" itemLabel="#{user}" />
+									</p:selectOneMenu>
+								</div>
+
+								<div class="p-field">
+									<p:outputLabel for="ip">Public IP</p:outputLabel>
+									<p:inputText id="ip" styleClass="Wid100" required="true"
+										value="#{meterView.enteredIP}" placeholder="Meter's Public IP" />
+								</div>
+								<div class="p-formgrid p-grid">
+									<div class="p-field p-col-6"></div>
+									<div class="p-field p-col">
+										<p:commandButton value="Save" icon="fa fa-save"
+											styleClass="ui-button ui-button-info"
+											actionListener="#{meterView.saveSelectedMeter()}"
+											update="meterTable" validateClient="true"
+											process="meterForm @this" />
+									</div>
+									<div class="p-field p-col">
+										<p:commandButton value="Cancel" icon="fa fa-times"
+											styleClass="ui-button ui-button-danger"
+											process="meterForm @this" validateClient="false"
+											oncomplete="PF('meter_dialog').hide()" />
+									</div>
+								</div>
+							</p:outputPanel>
+						</p:outputPanel>
+					</p:dialog>
+				</div>
+			</div>
+
+			<p:confirmDialog global="true">
+				<p:commandButton value="Yes" type="button"
+					styleClass="ui-confirmdialog-yes ui-button ui-button-info"
+					icon="fa fa-thumbs-up" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-confirmdialog-no ui-button ui-button-"
+					icon="fa fa-thumbs-down" />
+			</p:confirmDialog>
+
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

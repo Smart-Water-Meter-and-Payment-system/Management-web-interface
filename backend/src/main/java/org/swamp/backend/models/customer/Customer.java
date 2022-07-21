@@ -1,12 +1,15 @@
 package org.swamp.backend.models.customer;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.sers.webutils.model.BaseEntity;
+import org.swamp.backend.models.houseHoldBalance.HouseHoldBalance;
 import org.swamp.backend.models.meter.Meter;
 
 /**
@@ -25,6 +28,7 @@ public class Customer extends BaseEntity {
 	
 	//the meter from which the user registered themselves from
 	private Meter meterId;
+	private HouseHoldBalance householdBalance;
 	
 	@Column(name = "phone_number", nullable = false, columnDefinition = "varchar(10)")
 	public String getPhoneNumber() {
@@ -34,13 +38,21 @@ public class Customer extends BaseEntity {
 		this.phoneNumber = phoneNumber;
 	}
 	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.MERGE)
 	@JoinColumn(name = "meter_id", nullable = true)
 	public Meter getMeterId() {
 		return meterId;
 	}
 	public void setMeterId(Meter meterId) {
 		this.meterId = meterId;
+	}
+	
+	@OneToOne(mappedBy = "userId")
+	public HouseHoldBalance getHouseholdBalance() {
+		return householdBalance;
+	}
+	public void setHouseholdBalance(HouseHoldBalance householdBalance) {
+		this.householdBalance = householdBalance;
 	}
 	
 	@Override
