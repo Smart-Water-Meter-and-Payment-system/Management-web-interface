@@ -8,5 +8,4 @@ import org.swamp.backend.models.customer.Customer;
  *
  */
 public interface CustomerService extends GenericService<Customer> {
-	
 }

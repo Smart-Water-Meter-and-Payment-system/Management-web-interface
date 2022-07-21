@@ -11,11 +11,16 @@ import javax.persistence.Table;
 import org.sers.webutils.model.BaseEntity;
 import org.sers.webutils.model.security.User;
 
+/**
+ * This model will store details of meters that have been bought and installed
+ * @author Collins
+ *
+ */
 @Entity
 @Table(name = "meters")
 public class Meter extends BaseEntity {
 
-private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
 	//country where meter is installed
 	private String countryName;

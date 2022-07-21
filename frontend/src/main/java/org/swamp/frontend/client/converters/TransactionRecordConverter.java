@@ -6,28 +6,25 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
-import org.swamp.backend.core.services.MeterService;
-import org.swamp.backend.models.meter.Meter;
+import org.swamp.backend.core.services.TransactionRecordService;
+import org.swamp.backend.models.transactionRecord.TransactionRecord;
 
-/**
- * 
- * @author Collins
- * 
- */
-@FacesConverter("meterConverter")
-public class MeterConverter implements Converter {
+@FacesConverter("transactionRecordConverter")
+public class TransactionRecordConverter implements Converter {
+	
 	@Override
 	public Object getAsObject(FacesContext arg0, UIComponent arg1, String arg2) {
 		if (arg2 == null || arg2.isEmpty())
 			return null;
                 
-		return ApplicationContextProvider.getBean(MeterService.class).getInstanceByID(arg2);
+		return ApplicationContextProvider.getBean(TransactionRecordService.class).getInstanceByID(arg2);
 	}
 
 	@Override
 	public String getAsString(FacesContext arg0, UIComponent arg1, Object object) {
 		if (object == null || object instanceof String)
 			return null;
-		return ((Meter) object).getId();
+		return ((TransactionRecord) object).getId();
 	}
+
 }
