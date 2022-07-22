@@ -28,6 +28,8 @@ public class Customer extends BaseEntity {
 	
 	//the meter from which the user registered themselves from
 	private Meter meterId;
+	
+	//the balance attached to the customer
 	private HouseHoldBalance householdBalance;
 	
 	@Column(name = "phone_number", nullable = false, columnDefinition = "varchar(10)")

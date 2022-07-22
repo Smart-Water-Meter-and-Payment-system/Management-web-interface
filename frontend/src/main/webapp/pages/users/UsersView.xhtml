@@ -84,7 +84,7 @@
 
 							<f:facet name="header">
 								<div class="p-d-flex p-jc-between">
-								<div></div>
+									<div></div>
 									<div>
 										<span style="font-weight: bold">Users(#{usersView.totalRecords})</span>
 									</div>
@@ -204,7 +204,10 @@
 								<h5>Email</h5>
 								<div class="ui-inputgroup">
 
-									<p:inputText value="#{usersView.selectedUser.emailAddress}" />
+									<p:inputText value="#{usersView.selectedUser.emailAddress}">
+										<f:validateRegex
+											pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+									</p:inputText>
 								</div>
 							</div>
 
@@ -254,8 +257,9 @@
 										value="#{usersView.selectedRolesList}"
 										converter="roleConverter"
 										rendered="#{!selectedUser.hasAdministrativePrivileges()}"
-										layout="grid" columns="3" styleClass="grid-checkbox" multiple="true"
-										label="--Select Role(s)--" filter="true" filterMatchMode="startsWith">
+										layout="grid" columns="3" styleClass="grid-checkbox"
+										multiple="true" label="--Select Role(s)--" filter="true"
+										filterMatchMode="startsWith">
 										<f:selectItems value="#{usersView.rolesList}" var="role"
 											itemLabel="#{role}" itemValue="#{role}" />
 									</p:selectCheckboxMenu>
@@ -270,6 +274,7 @@
 				<f:facet name="footer">
 					<div class="ui-inputgroup">
 						<p:commandButton icon="pi pi-check" process="userForm @this"
+							validateClient="true"
 							actionListener="#{usersView.saveSelectedUser()}"
 							update="usersTable" value="Save" style="margin-left: 85%" />
 

@@ -1,0 +1,315 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/pages/californiatemplate/template.xhtml">
+
+	<ui:define name="title">Meter Account</ui:define>
+
+	<ui:define name="viewname">Meter Account</ui:define>
+
+	<ui:define name="content">
+
+		<h:form id="meterAccountView" prependId="false">
+			<div class="ui-g">
+				<p:button value="Back" styleClass="ui-button-danger"
+					icon="fa fa-backward" style="" ajax="false"
+					outcome="#{meterAccountView.parentView}" />
+				<div class="ui-g-12 card">
+					<p:tabView prependId="false">
+						<p:tab title="Water Charge Rates">
+							<div class="ui-g">
+								<div class="ui-g-12">
+									<p:outputPanel styleClass="ui-g-12">
+										<div class="p-grid overlay-demo">
+
+											<div class="">
+												<div class="card">
+													<h:outputText value="Active Rate:" />
+													<h2 class="p-text-right" style="margin-top: 10px;">
+														#{meterAccountView.getActivatedRate().charge} UGX / #{meterAccountView.getActivatedRate().waterVolume} LTRS</h2>
+												</div>
+											</div>
+
+										</div>
+									</p:outputPanel>
+									<div class="ui-g-12 card">
+
+										<p:accordionPanel prependId="false" activeIndex="false">
+											<p:tab title="Search, Add New Rate">
+												<div class="ui-g-12 ui-lg-4">
+													<div class="ui-g-12 ui-lg-12">
+														<p:inputText id="waterChargeRateSearchField"
+															required="false" placeholder="Search Term"
+															styleClass=" Wid100"
+															actionListener="#{meterAccountView.reloadWaterChargeRateView()}"
+															value="#{meterAccountView.waterChargeRateSearchTerm}" />
+													</div>
+												</div>
+
+												<div class="ui-g-12 ui-lg-3">
+													<div class="ui-g-12 ui-lg-12"></div>
+												</div>
+
+												<div class="ui-g-12 ui-lg-3">
+													<div class="ui-g-12 ui-lg-12">
+														<p:commandButton id="waterChargeRateSearchBtn"
+															update="waterChargeRatesTable" title="Search"
+															styleClass="ui-button ui-button-success"
+															icon="fa fa-search"
+															actionListener="#{meterAccountView.reloadWaterChargeRateView()}" />
+
+														<p:commandButton id="waterChargeRateCreateBtn"
+															title="Add Rate" styleClass="ui-button ui-button-info"
+															icon="fa fa-plus" style="margin-left: 5px"
+															actionListener="#{dialogWaterChargeRate.show}"
+															process="@this">
+															<f:setPropertyActionListener
+																target="#{dialogWaterChargeRate.selectedMeter}"
+																value="#{meterAccountView.model}" />
+															<f:setPropertyActionListener value="#{null}"
+																target="#{dialogWaterChargeRate.model}" />
+															<p:ajax event="dialogReturn"
+																update="waterChargeRatesTable" />
+														</p:commandButton>
+													</div>
+												</div>
+											</p:tab>
+										</p:accordionPanel>
+
+										<div class="shadow-box ui-shadow-1">
+											<p:dataTable id="waterChargeRatesTable" var="model"
+												value="#{meterAccountView.waterChargeRateTable}"
+												widgetVar="waterChargeRatesTable"
+												paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+												paginator="true" lazy="true" rows="10"
+												emptyMessage="#{meterAccountView.waterChargeRateTable.dataEmptyMessage}"
+												paginatorPosition="bottom" paginatorAlwaysVisible="false"
+												rowIndexVar="row" reflow="true" styleClass="TableAlgnment">
+
+												<f:facet name="header">
+													<p:outputPanel styleClass="leftAlign">
+														<p:outputPanel styleClass="centerAlign">
+															<p:outputLabel
+																value="#{meterAccountView.waterChargeRateTable.totalRecords} Rate(s) Found" />
+														</p:outputPanel>
+													</p:outputPanel>
+												</f:facet>
+
+												<p:column width="30" headerText="No.">
+													<h:outputText value="#{row + 1}" />
+												</p:column>
+												<p:column headerText="Water Volume(ltrs)">
+													<h:outputText value="#{model.waterVolume}" />
+												</p:column>
+
+												<p:column headerText="Charge(UGX/Water Volume)">
+													<h:outputText value="#{model.charge}" />
+												</p:column>
+
+												<p:column headerText="Activated">
+													<h:outputText value="#{model.activated}"
+														styleClass="customer-badge status-#{model.activated.name().toLowerCase()}" />
+												</p:column>
+
+												<p:column headerText="Date Created">
+													<h:outputText value="#{model.dateCreated}">
+														<f:convertDateTime pattern="dd MMM, yyyy" />
+													</h:outputText>
+												</p:column>
+
+												<p:column width="100" styleClass="rightAlign"
+													headerText="Action">
+													<p:commandButton
+														actionListener="#{dialogWaterChargeRate.show}"
+														icon="fa fa-edit" styleClass="ui-button-info">
+														<f:setPropertyActionListener
+															target="#{dialogWaterChargeRate.model}" value="#{model}" />
+														<f:setPropertyActionListener
+															target="#{dialogWaterChargeRate.selectedMeter}"
+															value="#{model.meterId}" />
+														<p:ajax event="dialogReturn"
+															update="waterChargeRatesTable" />
+													</p:commandButton>
+
+													<p:commandButton
+														action="#{meterAccountView.removeWaterChargeRate(model)}"
+														update="waterChargeRatesTable" icon="fa fa-trash"
+														style="margin-left:2px" styleClass="ui-button-danger">
+														<p:confirm header="Confirmation"
+															message="You are about to delete a rate. Do you wish to continue?"
+															icon="ui-icon-alert" />
+													</p:commandButton>
+												</p:column>
+
+											</p:dataTable>
+										</div>
+									</div>
+								</div>
+
+								<p:confirmDialog global="true">
+									<p:commandButton value="Yes" type="button"
+										styleClass="ui-confirmdialog-yes" icon="fa fa-thumbs-up" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no" icon="fa fa-thumbs-down" />
+								</p:confirmDialog>
+							</div>
+						</p:tab>
+
+						<p:tab title="Customers">
+							<div class="ui-g">
+								<div class="ui-g-12">
+									<div class="ui-g-12 card">
+										<div class="ui-g-12 ui-lg-4">
+											<div class="ui-g-12 ui-lg-12">
+												<p:inputText id="customersSearchField" required="false"
+													placeholder="Search Term" styleClass=" Wid100"
+													actionListener="#{meterAccountView.reloadCustomersView()}"
+													value="#{meterAccountView.customerSearchTerm}" />
+											</div>
+										</div>
+
+										<div class="ui-g-12 ui-lg-3">
+											<div class="ui-g-12 ui-lg-12"></div>
+										</div>
+
+										<div class="ui-g-12 ui-lg-3">
+											<div class="ui-g-12 ui-lg-12">
+												<p:commandButton id="customersSearchBtn"
+													update="customersTable" title="Search"
+													styleClass="ui-button ui-button-success"
+													icon="fa fa-search"
+													actionListener="#{meterAccountView.reloadCustomersView()}" />
+											</div>
+										</div>
+
+										<div class="ui-g-12">
+											<div class="shadow-box ui-shadow-1">
+												<p:dataTable id="customersTable" var="model"
+													value="#{meterAccountView.customersTable}"
+													widgetVar="customersTable"
+													paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+													paginator="true" lazy="true" rows="10"
+													emptyMessage="#{meterAccountView.customersTable.dataEmptyMessage}"
+													paginatorPosition="bottom" paginatorAlwaysVisible="false"
+													rowIndexVar="row" reflow="true" styleClass="TableAlgnment">
+
+													<f:facet name="header">
+														<p:outputPanel styleClass="leftAlign">
+															<p:outputPanel styleClass="centerAlign">
+																<p:outputLabel
+																	value="#{meterAccountView.customersTable.totalRecords} Customer(s) Found" />
+															</p:outputPanel>
+														</p:outputPanel>
+													</f:facet>
+
+													<p:column width="30" headerText="No.">
+														<h:outputText value="#{row + 1}" />
+													</p:column>
+													<p:column headerText="Phone Number">
+														<h:outputText value="#{model.phoneNumber}" />
+													</p:column>
+
+													<p:column headerText="Balance">
+														<h:outputText value="#{model.householdBalance}" />
+													</p:column>
+
+												</p:dataTable>
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<p:confirmDialog global="true">
+									<p:commandButton value="Yes" type="button"
+										styleClass="ui-confirmdialog-yes" icon="fa fa-thumbs-up" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no" icon="fa fa-thumbs-down" />
+								</p:confirmDialog>
+							</div>
+						</p:tab>
+
+						<p:tab title="Transaction Records">
+							<div class="ui-g">
+								<div class="ui-g-12">
+									<div class="ui-g-12 card">
+										<div class="ui-g-12 ui-lg-4">
+											<div class="ui-g-12 ui-lg-12">
+												<p:inputText id="transactionRecordsSearchField"
+													required="false" placeholder="Search Term"
+													styleClass=" Wid100"
+													actionListener="#{meterAccountView.reloadTransactionRecordView()}"
+													value="#{meterAccountView.transactionRecordSearchTerm}" />
+											</div>
+										</div>
+
+										<div class="ui-g-12 ui-lg-3">
+											<div class="ui-g-12 ui-lg-12"></div>
+										</div>
+
+										<div class="ui-g-12 ui-lg-3">
+											<div class="ui-g-12 ui-lg-12">
+												<p:commandButton id="transactionRecordsSearchBtn"
+													update="transactionRecordsTable" title="Search"
+													styleClass="ui-button ui-button-success"
+													icon="fa fa-search"
+													actionListener="#{meterAccountView.reloadTransactionRecordView()}" />
+											</div>
+										</div>
+
+										<div class="ui-g-12">
+											<div class="shadow-box ui-shadow-1">
+												<p:dataTable id="transactionRecordsTable" var="model"
+													value="#{meterAccountView.transactionRecordsTable}"
+													widgetVar="transactionRecordsTable"
+													paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}"
+													paginator="true" lazy="true" rows="10"
+													emptyMessage="#{meterAccountView.transactionRecordsTable.dataEmptyMessage}"
+													paginatorPosition="bottom" paginatorAlwaysVisible="false"
+													rowIndexVar="row" reflow="true" styleClass="TableAlgnment">
+
+													<f:facet name="header">
+														<p:outputPanel styleClass="leftAlign">
+															<p:outputPanel styleClass="centerAlign">
+																<p:outputLabel
+																	value="#{meterAccountView.transactionRecordsTable.totalRecords} Customer(s) Found" />
+															</p:outputPanel>
+														</p:outputPanel>
+													</f:facet>
+
+													<p:column width="30" headerText="No.">
+														<h:outputText value="#{row + 1}" />
+													</p:column>
+													<p:column headerText="Money Paid">
+														<h:outputText value="#{model.amountPaid}" />
+													</p:column>
+
+													<p:column headerText="Amount of Water Collected">
+														<h:outputText value="#{model.waterVolumeCollected}" />
+													</p:column>
+
+												</p:dataTable>
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<p:confirmDialog global="true">
+									<p:commandButton value="Yes" type="button"
+										styleClass="ui-confirmdialog-yes" icon="fa fa-thumbs-up" />
+									<p:commandButton value="No" type="button"
+										styleClass="ui-confirmdialog-no" icon="fa fa-thumbs-down" />
+								</p:confirmDialog>
+							</div>
+						</p:tab>
+					</p:tabView>
+				</div>
+			</div>
+		</h:form>
+
+	</ui:define>
+
+</ui:composition>

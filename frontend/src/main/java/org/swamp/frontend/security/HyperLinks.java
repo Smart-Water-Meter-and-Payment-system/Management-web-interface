@@ -19,5 +19,6 @@ public class HyperLinks {
     public static final String LOGIN_FORM = "/ExternalViews/Login.xhtml?faces-redirect=true";
 
     public static final String METER_VIEW = "/pages/swamp/meter/MeterView.xhtml?faces-redirect=true";
+    public static final String METER_ACCOUNT_VIEW = "/pages/swamp/meter/MeterAccountView.xhtml?faces-redirect=true";
     public static final String CUSTOMER_VIEW = "/pages/swamp/customers/CustomersView.xhtml?faces-redirect=true";
 }

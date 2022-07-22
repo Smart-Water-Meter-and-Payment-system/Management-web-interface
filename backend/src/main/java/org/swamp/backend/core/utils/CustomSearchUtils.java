@@ -8,6 +8,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.utils.SortField;
+import org.swamp.backend.constants.ChargeRateStatus;
 import org.swamp.backend.models.meter.Meter;
 
 import com.googlecode.genericdao.search.Filter;
@@ -98,6 +99,40 @@ public class CustomSearchUtils {
     	
     	return addSortField(sortField, search);
     }
+    
+    public static Search generateSearchObjectForWaterChargeRate(String query, SortField sortField, 
+    		List<ChargeRateStatus> chargeRateStatus) {
+    	Search search = generateSearchTerms(query, Arrays.asList(""));
+
+    	//searching for chargeRates
+    	if(chargeRateStatus != null && !chargeRateStatus.isEmpty())
+    		search.addFilterIn("activated", chargeRateStatus);
+    	
+    	return addSortField(sortField, search);
+    }
+    
+    public static Search generateSearchObjectForTransactionRecord(String query, SortField sortField) {
+    	Search search = generateSearchTerms(query, Arrays.asList(""));
+    	
+    	return addSortField(sortField, search);
+    }
+    
+//    public static Search generateSearchForIntegers(Search search, List<String> selectedIntColumns, int min, int max) {
+//    	if(selectedIntColumns != null) {
+//    		if(selectedIntColumns.size() > 0) {
+//    			for(String name : selectedIntColumns) {
+//    				search.addFilterAnd(Filter.lessOrEqual(name, min), Filter.greaterOrEqual(name, max));
+//    			}
+//    		} else {
+//    			selectedIntColumns = Arrays.asList("eloe", "estimatedCostAssignee", "estimatedCostOrganisation",
+//    					"actualLoe", "actualCostOrganisation", "actualCostAssignee");
+//    			for(String name : selectedIntColumns) {
+//    				search.addFilterAnd(Filter.lessOrEqual(name, min), Filter.greaterOrEqual(name, max));
+//    			}
+//    		}
+//    	}
+//    	return search;
+//    }
 
 
 }
