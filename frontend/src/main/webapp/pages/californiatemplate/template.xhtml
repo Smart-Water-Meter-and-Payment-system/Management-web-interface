@@ -17,6 +17,40 @@
     <h:outputScript name="js/layout.js" library="california-layout"/>
     <h:outputScript name="js/prism.js" library="california-layout"/>
     <ui:insert name="head"/>
+	<style>
+.customer-badge.status-no {
+	background: #FEEDAF;
+	color: #8A5340;
+}
+
+.customer-badge.status-dropped {
+	background: #FFCDD2;
+	color: #C63737;
+}
+
+.customer-badge.status-yes {
+	background: #C8E6C9;
+	color: #256029;
+}
+
+.customer-badge.status-ongoing {
+	background: #FFD8B2;
+	color: #805B36;
+}
+
+.customer-badge {
+	border-radius: 2px;
+	padding: 0.25em 0.5rem;
+	text-transform: uppercase;
+	font-weight: 700;
+	font-size: 12px;
+	letter-spacing: 0.3px;
+}
+
+* {
+	box-sizing: border-box;
+}
+</style>
 </h:head>
 
 <h:body styleClass="main-body #{guestPreferences.inputStyleClass}">

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	template="/pages/californiatemplate/dialog-template.xhtml">
+
+	<ui:define name="content">
+		<title>Water Charge Rate</title>
+		<h:form id="dialogWaterChargeRate">
+			<div class="ui-g card">
+				<div class="ui-g-12">
+					<p:outputPanel styleClass="ui-fluid">
+						<div class="p-field">
+							<p:outputLabel for="waterVol" value="Water Volume" />
+
+							<p:inputNumber id="waterVol"
+								value="#{dialogWaterChargeRate.model.waterVolume}"
+								symbol=" litre(s)" symbolPosition="s" padControl="false"
+								thousandSeparator="," required="true" />
+						</div>
+						
+						<div class="p-field">
+							<p:outputLabel for="charge" value="Charge for Water Volume" />
+
+							<p:inputNumber id="charge"
+								value="#{dialogWaterChargeRate.model.charge}"
+								symbol=" UGX per Water Volume" symbolPosition="s" padControl="false"
+								thousandSeparator="," required="true" />
+						</div>
+
+						<div class="p-field">
+							<p:outputLabel for="chargeStatus" value="Activate" />
+
+							<p:selectOneMenu id="chargeStatus"
+								value="#{dialogWaterChargeRate.model.activated}">
+								<f:selectItems value="#{dialogWaterChargeRate.chargeStatus}" required="true" />
+							</p:selectOneMenu>
+						</div>
+						<div class="p-formgrid p-grid">
+							<div class="p-field p-col-6"></div>
+							<div class="p-field p-col">
+								<p:commandButton value="Save" icon="fa fa-save"
+									styleClass="ui-button ui-button-info"
+									actionListener="#{dialogWaterChargeRate.save}" update="dialogWaterChargeRate"
+									validateClient="true" ajax="true" />
+							</div>
+							<div class="p-field p-col">
+								<p:commandButton value="Cancel" icon="fa fa-times"
+									actionListener="#{dialogWaterChargeRate.hide}"
+									styleClass="ui-button ui-button-danger" process="@this"
+									validateClient="false" />
+							</div>
+						</div>
+					</p:outputPanel>
+				</div>
+			</div>
+		</h:form>
+	</ui:define>
+</ui:composition>

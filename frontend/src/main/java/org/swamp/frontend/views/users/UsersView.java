@@ -26,6 +26,7 @@ import org.sers.webutils.server.core.service.UserService;
 import org.sers.webutils.server.core.service.excel.reports.ExcelReport;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 import org.sers.webutils.server.core.utils.MailService;
+import org.sers.webutils.server.core.utils.TelephoneNumberUtils;
 import org.sers.webutils.server.shared.SharedAppData;
 import org.swamp.backend.core.utils.CustomSearchUtils;
 import org.swamp.frontend.security.HyperLinks;
@@ -102,7 +103,8 @@ public class UsersView extends PaginatedTableView<User, UsersView, UsersView> {
         			+ "Username: " + this.selectedUser.getUsername() 
         			+ "Password: " + this.selectedUser.getClearTextPassword();
         	final String recipient = this.selectedUser.getEmailAddress();
-        	
+        	this.selectedUser.setPhoneNumber(TelephoneNumberUtils.
+        			getValidTelephoneNumber(this.selectedUser.getPhoneNumber()));
             userService.saveUser(this.selectedUser);
             PrimeFaces.current().executeScript("PF('selected_user_dialog').hide()");
             PrimeFaces.current().ajax().update("usersView:usersTable");
