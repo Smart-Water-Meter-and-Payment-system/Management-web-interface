@@ -110,6 +110,7 @@
 							<p:column headerText="Action" exportable="false"
 								style="text-align: center">
 								<p:commandButton icon="fa fa-eye" process="@this" immediate="true"
+								rendered="#{(componentRenderer.administrator||componentRenderer.superAdmin||componentRenderer.systemAdmin)}"
 									action="#{meterAccountView.getViewPath}"
 									styleClass="ui-button ui-button-success">
 									<f:setPropertyActionListener

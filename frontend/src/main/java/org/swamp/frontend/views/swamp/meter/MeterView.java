@@ -22,9 +22,11 @@ import org.sers.webutils.model.utils.SortField;
 import org.sers.webutils.server.core.service.UserService;
 import org.sers.webutils.server.core.service.excel.reports.ExcelReport;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
+import org.sers.webutils.server.shared.SharedAppData;
 import org.swamp.backend.core.services.MeterService;
 import org.swamp.backend.core.utils.CustomSearchUtils;
 import org.swamp.backend.models.meter.Meter;
+import org.swamp.backend.models.security.PermissionConstants;
 import org.swamp.frontend.security.HyperLinks;
 import org.swamp.frontend.security.UiUtils;
 
@@ -69,6 +71,9 @@ public class MeterView extends PaginatedTableView<Meter, MeterView, MeterView> {
 		}
 		this.search = CustomSearchUtils.generateSearchObjectForMeters(searchTerm, selectedSortField, 
 				userIds);
+		if(SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SYSTEM_ADMINISTRATOR) && 
+				!SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SUPER_ADMINISTRATOR))
+			this.search.addFilterEqual("userId", SharedAppData.getLoggedInUser());
 		super.setDataModels(this.meterService.getInstances(search, arg0, arg1));
 	}
 	
@@ -80,6 +85,9 @@ public class MeterView extends PaginatedTableView<Meter, MeterView, MeterView> {
 		}
 		this.search = CustomSearchUtils.generateSearchObjectForMeters(searchTerm, selectedSortField, 
 				userIds);
+		if(SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SYSTEM_ADMINISTRATOR) && 
+				!SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SUPER_ADMINISTRATOR))
+			this.search.addFilterEqual("userId", SharedAppData.getLoggedInUser());
 		super.setTotalRecords(this.meterService.countInstances(search));
 	}
 	
