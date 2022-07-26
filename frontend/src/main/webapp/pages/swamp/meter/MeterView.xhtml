@@ -91,9 +91,9 @@
 								<h:outputText value="#{model.userId.fullName}" />
 							</p:column>
 
-							<p:column headerText="City">
+						<!-- 	<p:column headerText="City">
 								<h:outputText value="#{model.cityName}" />
-							</p:column>
+							</p:column> -->
 							
 							<p:column headerText="Public IP">
 								<h:outputText value="#{model.publicIp}" />
@@ -130,7 +130,7 @@
 							<p:graphicImage value="/resources/images/workingicon.png" />
 						</p:blockUI>
 					</div>
-					<p:dialog widgetVar="meter_dialog" height="250px"
+					<p:dialog widgetVar="meter_dialog" height="350px"
 						width="500px"
 						header="Meter Registration Form"
 						minHeight="40" showEffect="fade" modal="true">
@@ -153,6 +153,19 @@
 									<p:inputText id="ip" styleClass="Wid100" required="true"
 										value="#{meterView.enteredIP}" placeholder="Meter's Public IP" />
 								</div>
+								
+								<div class="p-field">
+									<p:outputLabel for="longitude">Longitude</p:outputLabel>
+									<p:inputText id="longitude" styleClass="Wid100" required="true"
+										value="#{meterView.selectedMeter.longitude}" placeholder="Meter's Public IP" />
+								</div>
+								
+								<div class="p-field">
+									<p:outputLabel for="latitude">Latitude</p:outputLabel>
+									<p:inputText id="latitude" styleClass="Wid100" required="true"
+										value="#{meterView.selectedMeter.latitude}" placeholder="Meter's Public IP" />
+								</div>
+								
 								<div class="p-formgrid p-grid">
 									<div class="p-field p-col-6"></div>
 									<div class="p-field p-col">

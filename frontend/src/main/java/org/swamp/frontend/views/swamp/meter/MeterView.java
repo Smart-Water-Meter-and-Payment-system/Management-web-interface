@@ -112,13 +112,13 @@ public class MeterView extends PaginatedTableView<Meter, MeterView, MeterView> {
 	
 	public void saveSelectedMeter() {
 		try {
-			CityResponse response = meterService.getLocation(this.enteredIP);
+//			CityResponse response = meterService.getLocation(this.enteredIP);
 			this.selectedMeter.setUserId(this.selectedUserId);
 			this.selectedMeter.setPublicIp(this.enteredIP);
-			this.selectedMeter.setCountryName(response.getCountry().getName());
-			this.selectedMeter.setCityName(response.getCity().getName());
-			this.selectedMeter.setLatitude(BigDecimal.valueOf(response.getLocation().getLatitude()));
-			this.selectedMeter.setLongitude(BigDecimal.valueOf(response.getLocation().getLongitude()));
+//			this.selectedMeter.setCountryName(response.getCountry().getName());
+//			this.selectedMeter.setCityName(response.getCity().getName());
+//			this.selectedMeter.setLatitude(BigDecimal.valueOf(response.getLocation().getLatitude()));
+//			this.selectedMeter.setLongitude(BigDecimal.valueOf(response.getLocation().getLongitude()));
             meterService.saveInstance(this.selectedMeter);
             this.enteredIP = null;
             PrimeFaces.current().executeScript("PF('meter_dialog').hide()");

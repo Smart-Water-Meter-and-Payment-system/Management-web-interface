@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +31,7 @@ import org.sers.webutils.server.core.utils.MailService;
 import org.sers.webutils.server.core.utils.TelephoneNumberUtils;
 import org.sers.webutils.server.shared.SharedAppData;
 import org.swamp.backend.core.utils.CustomSearchUtils;
+import org.swamp.backend.core.utils.EmailClient;
 import org.swamp.frontend.security.HyperLinks;
 import org.swamp.frontend.security.UiUtils;
 
@@ -109,19 +112,19 @@ public class UsersView extends PaginatedTableView<User, UsersView, UsersView> {
             PrimeFaces.current().executeScript("PF('selected_user_dialog').hide()");
             PrimeFaces.current().ajax().update("usersView:usersTable");
             
-//            ExecutorService service = Executors.newFixedThreadPool(1);
-//            service.submit(new Runnable() {
-//				@Override
-//				public void run() {
-//					try {
-//						EmailClient.sendMail(recipient, subject, emailContent);
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					} 
-//				}
-//			});
+            ExecutorService service = Executors.newFixedThreadPool(1);
+            service.submit(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						EmailClient.sendMail(recipient, subject, emailContent);
+					} catch (Exception e) {
+						e.printStackTrace();
+					} 
+				}
+			});
             
-            UiUtils.showMessageBox("Action successful","SwampUser account created. Log-in details sent to user's email");
+            UiUtils.showMessageBox("Action successful","SwampUser account created");
            // mailservice.sendPasswordChangeMail(this.selectedUser);
             
         } catch (ValidationFailedException ex) {

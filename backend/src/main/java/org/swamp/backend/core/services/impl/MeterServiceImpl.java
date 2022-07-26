@@ -25,10 +25,10 @@ public class MeterServiceImpl extends GenericServiceImpl<Meter> implements Meter
 
 	@Override
 	public Meter saveInstance(Meter meter) throws ValidationFailedException, OperationFailedException {
-		if(meter.getCountryName() == null || StringUtils.isBlank(meter.getCountryName()))
-			throw new ValidationFailedException("Missing Country Name");
-		if(meter.getCityName() == null || StringUtils.isBlank(meter.getCityName()))
-			throw new ValidationFailedException("Missing City Name");
+//		if(meter.getCountryName() == null || StringUtils.isBlank(meter.getCountryName()))
+//			throw new ValidationFailedException("Missing Country Name");
+//		if(meter.getCityName() == null || StringUtils.isBlank(meter.getCityName()))
+//			throw new ValidationFailedException("Missing City Name");
 		if(meter.getLongitude() == null)
 			throw new ValidationFailedException("Missing Longitude");
 		if(meter.getLatitude() == null)
