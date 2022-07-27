@@ -3,15 +3,18 @@ package org.swamp.backend.core.services.impl;
 import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.sers.webutils.model.exception.OperationFailedException;
 import org.sers.webutils.model.exception.ValidationFailedException;
+import org.sers.webutils.model.security.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.swamp.backend.core.services.MeterService;
 import org.swamp.backend.models.meter.Meter;
 
+import com.googlecode.genericdao.search.Search;
 import com.maxmind.geoip2.DatabaseReader;
 import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
@@ -22,10 +25,10 @@ public class MeterServiceImpl extends GenericServiceImpl<Meter> implements Meter
 
 	@Override
 	public Meter saveInstance(Meter meter) throws ValidationFailedException, OperationFailedException {
-		if(meter.getCountryName() == null || StringUtils.isBlank(meter.getCountryName()))
-			throw new ValidationFailedException("Missing Country Name");
-		if(meter.getCityName() == null || StringUtils.isBlank(meter.getCityName()))
-			throw new ValidationFailedException("Missing City Name");
+//		if(meter.getCountryName() == null || StringUtils.isBlank(meter.getCountryName()))
+//			throw new ValidationFailedException("Missing Country Name");
+//		if(meter.getCityName() == null || StringUtils.isBlank(meter.getCityName()))
+//			throw new ValidationFailedException("Missing City Name");
 		if(meter.getLongitude() == null)
 			throw new ValidationFailedException("Missing Longitude");
 		if(meter.getLatitude() == null)
@@ -51,6 +54,12 @@ public class MeterServiceImpl extends GenericServiceImpl<Meter> implements Meter
 	@Override
 	public boolean isDeletable(Meter instance) throws OperationFailedException {
 		return true;
+	}
+
+	@Override
+	public List<Meter> getAdminMeters(User user) {
+		Search search = new Search();	
+		return super.getInstances(search.addFilterEqual("userId", user), 0, 0);
 	}
 
 }

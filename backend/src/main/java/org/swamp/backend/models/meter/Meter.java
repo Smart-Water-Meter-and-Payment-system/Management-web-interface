@@ -50,7 +50,7 @@ public class Meter extends BaseEntity {
 		this.userId = userId;
 	}
 	
-	@Column(name = "country_name", nullable = false, columnDefinition = "varchar(50)")
+	@Column(name = "country_name", nullable = true, columnDefinition = "varchar(50)")
 	public String getCountryName() {
 		return countryName;
 	}
@@ -59,7 +59,7 @@ public class Meter extends BaseEntity {
 		this.countryName = countryName;
 	}
 
-	@Column(name = "city_name", nullable = false, columnDefinition = "varchar(50)")
+	@Column(name = "city_name", nullable = true, columnDefinition = "varchar(50)")
 	public String getCityName() {
 		return cityName;
 	}
@@ -68,7 +68,7 @@ public class Meter extends BaseEntity {
 		this.cityName = cityName;
 	}
 
-	@Column(name = "longitude", columnDefinition = "Decimal(6,2) default'0.00'")
+	@Column(name = "longitude", columnDefinition = "Decimal(8,6) default'00.000000'")
 	public BigDecimal getLongitude() {
 		return longitude;
 	}
@@ -77,7 +77,7 @@ public class Meter extends BaseEntity {
 		this.longitude = longitude;
 	}
 
-	@Column(name = "latitude", columnDefinition = "Decimal(6,2) default'0.00'")
+	@Column(name = "latitude", columnDefinition = "Decimal(8,6) default'00.000000'")
 	public BigDecimal getLatitude() {
 		return latitude;
 	}

@@ -95,7 +95,7 @@ public class CustomSearchUtils {
     	
         //searching for meters
         if(meters != null && !meters.isEmpty())
-        	search.addFilterIn("meter.id", meters);
+        	search.addFilterIn("meterId", meters);
     	
     	return addSortField(sortField, search);
     }

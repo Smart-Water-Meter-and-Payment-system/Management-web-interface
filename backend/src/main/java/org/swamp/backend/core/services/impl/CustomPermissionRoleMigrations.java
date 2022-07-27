@@ -17,7 +17,6 @@ import org.sers.webutils.server.core.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.swamp.backend.models.security.PermissionConstants;
 import org.swamp.backend.models.security.SWAMPPermissionInterpreter;
 
 @Service
@@ -65,7 +64,7 @@ public class CustomPermissionRoleMigrations {
 			if(user.getLastName().equals("Administrator") && user.getFirstName().equals("System")) {
 				Set<Role> roles = new HashSet<Role>();
 				roles.add(roleDao.searchUniqueByPropertyEqual("name", "ROLE_ADMINISTRATOR"));
-				roles.add(roleDao.searchUniqueByPropertyEqual("name", "SWAMP Super Administrator"));
+				roles.add(roleDao.searchUniqueByPropertyEqual("name", "Super Administrator"));
 				user.setRoles(roles);
 				try {
 					userService.saveUser(user);

@@ -15,11 +15,13 @@ import org.sers.webutils.model.RecordStatus;
 import org.sers.webutils.model.utils.SortField;
 import org.sers.webutils.server.core.service.excel.reports.ExcelReport;
 import org.sers.webutils.server.core.utils.ApplicationContextProvider;
+import org.sers.webutils.server.shared.SharedAppData;
 import org.swamp.backend.core.services.CustomerService;
 import org.swamp.backend.core.services.MeterService;
 import org.swamp.backend.core.utils.CustomSearchUtils;
 import org.swamp.backend.models.customer.Customer;
 import org.swamp.backend.models.meter.Meter;
+import org.swamp.backend.models.security.PermissionConstants;
 import org.swamp.frontend.security.HyperLinks;
 
 import com.googlecode.genericdao.search.Search;
@@ -52,6 +54,9 @@ public class CustomerView extends PaginatedTableView<Customer, CustomerView, Cus
 	public void reloadFromDB(int arg0, int arg1, Map<String, Object> arg2) throws Exception {
 		this.search = CustomSearchUtils.generateSearchObjectForCustomers(searchTerm, selectedSortField, 
 				this.selectedMeters);
+		if(SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SYSTEM_ADMINISTRATOR) && 
+				!SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SUPER_ADMINISTRATOR))
+			this.search.addFilterIn("meterId", this.meterService.getAdminMeters(SharedAppData.getLoggedInUser()));
 		super.setDataModels(this.customerService.getInstances(search, arg0, arg1));
 	}
 	
@@ -59,6 +64,9 @@ public class CustomerView extends PaginatedTableView<Customer, CustomerView, Cus
 	public void reloadFilterReset() {
 		this.search = CustomSearchUtils.generateSearchObjectForCustomers(searchTerm, selectedSortField, 
 				this.selectedMeters);
+		if(SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SYSTEM_ADMINISTRATOR) && 
+				!SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SUPER_ADMINISTRATOR))
+			this.search.addFilterIn("meterId", this.meterService.getAdminMeters(SharedAppData.getLoggedInUser()));
 		super.setTotalRecords(this.customerService.countInstances(search));
 	}
 
