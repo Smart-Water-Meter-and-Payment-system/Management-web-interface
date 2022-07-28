@@ -1,5 +1,6 @@
 package org.swamp.frontend.views.swamp.meter;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -51,6 +52,8 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 	private List<Meter> meters, selectedMeters = new ArrayList<Meter>();
 	private List<ChargeRateStatus> chargeRateStatuses, selectedChargeRateStatus = new ArrayList<ChargeRateStatus>();
 	private String customerSearchTerm, waterChargeRateSearchTerm, transactionRecordSearchTerm;
+	private BigDecimal charge, waterVolume;
+	private Meter meter;
 
 	@Override
 	public void beanInit() {
@@ -69,6 +72,7 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 		reloadCustomersView();
 		reloadWaterChargeRateView();
 		reloadTransactionRecordView();
+		getActivatedRate();
 	}
 
 	public void reloadCustomersView() {
@@ -175,12 +179,19 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 		}
 	}
 	
-	public WaterChargeRate getActivatedRate() {
-		WaterChargeRate rate = null;
-		for(WaterChargeRate chargeRate: this.waterChargeRateService.getActivatedRate(this.model)) {
-			rate = chargeRate;
+	public void getActivatedRate() {
+		List<WaterChargeRate> activeRate = this.waterChargeRateService.getActivatedRate(this.meter);
+		if(!activeRate.isEmpty()) {
+			for(WaterChargeRate chargeRate: this.waterChargeRateService.getActivatedRate(this.meter)) {
+				this.charge = chargeRate.getCharge();
+				this.waterVolume = chargeRate.getWaterVolume();
+			}
+			System.out.println(this.charge+"==============="+this.waterVolume);
+		}else {
+			this.charge = null;
+			this.waterVolume = null;
+			System.out.println(this.charge+"==============="+this.waterVolume);
 		}
-		return rate;
 	}
 
 	@Override
@@ -316,6 +327,30 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 
 	public void setSelectedChargeRateStatus(List<ChargeRateStatus> selectedChargeRateStatus) {
 		this.selectedChargeRateStatus = selectedChargeRateStatus;
+	}
+
+	public BigDecimal getWaterVolume() {
+		return waterVolume;
+	}
+
+	public void setWaterVolume(BigDecimal waterVolume) {
+		this.waterVolume = waterVolume;
+	}
+
+	public BigDecimal getCharge() {
+		return charge;
+	}
+
+	public void setCharge(BigDecimal charge) {
+		this.charge = charge;
+	}
+
+	public Meter getMeter() {
+		return meter;
+	}
+
+	public void setMeter(Meter meter) {
+		this.meter = meter;
 	}
 	
 }

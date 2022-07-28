@@ -32,6 +32,9 @@ public class Customer extends BaseEntity {
 	//the balance attached to the customer
 	private HouseHoldBalance householdBalance;
 	
+	//the token for customer to access their balance
+	private String token;
+	
 	@Column(name = "phone_number", nullable = false, columnDefinition = "varchar(10)")
 	public String getPhoneNumber() {
 		return phoneNumber;
@@ -55,6 +58,15 @@ public class Customer extends BaseEntity {
 	}
 	public void setHouseholdBalance(HouseHoldBalance householdBalance) {
 		this.householdBalance = householdBalance;
+	}
+	
+	@Column(name = "token")
+	public String getToken() {
+		return token;
+	}
+	
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	@Override
