@@ -1,5 +1,7 @@
 package org.swamp.frontend.views.dialogs.swamp.meter;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -45,6 +47,18 @@ public class WaterChargeRateDialog extends DialogForm<WaterChargeRate> {
 						addFilterEqual("activated", ChargeRateStatus.YES), 0, 0).isEmpty())
 					throw new OperationFailedException("You cannot activate this rate because an active one already exists");
 				super.model.setMeterId(this.selectedMeter);
+				
+				//send activated rate to txt file
+				try {
+					FileWriter myWriter = new FileWriter("currentWaterChargeRate.txt");
+					myWriter.write(super.model.getCharge()+"\n"+super.model.getWaterVolume());
+					myWriter.close();
+					System.out.println("Successfully wrote to the file.");
+				} catch (IOException e) {
+					System.out.println("An error occurred.");
+					e.printStackTrace();
+				}
+				
 				waterChargeRateService.saveInstance(super.model);
 			}else {
 				super.model.setMeterId(this.selectedMeter);

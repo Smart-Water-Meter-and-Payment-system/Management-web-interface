@@ -27,8 +27,13 @@
 											<div class="">
 												<div class="card">
 													<h:outputText value="Active Rate:" />
-													<h2 class="p-text-right" style="margin-top: 10px;">
-														#{meterAccountView.getActivatedRate().charge} UGX / #{meterAccountView.getActivatedRate().waterVolume} LTRS</h2>
+
+													<p:outputPanel id="activatedRate">
+														<h2 class="p-text-right" style="margin-top: 10px;">
+															#{meterAccountView.charge} UGX /
+															#{meterAccountView.waterVolume} LTRS</h2>
+													</p:outputPanel>
+
 												</div>
 											</div>
 
@@ -71,7 +76,8 @@
 															<f:setPropertyActionListener value="#{null}"
 																target="#{dialogWaterChargeRate.model}" />
 															<p:ajax event="dialogReturn"
-																update="waterChargeRatesTable" />
+																listener="#{meterAccountView.getActivatedRate()}"
+																update="waterChargeRatesTable, activatedRate" />
 														</p:commandButton>
 													</div>
 												</div>
@@ -130,7 +136,8 @@
 															target="#{dialogWaterChargeRate.selectedMeter}"
 															value="#{model.meterId}" />
 														<p:ajax event="dialogReturn"
-															update="waterChargeRatesTable" />
+															listener="#{meterAccountView.getActivatedRate()}"
+															update="waterChargeRatesTable, activatedRate" />
 													</p:commandButton>
 
 													<p:commandButton
