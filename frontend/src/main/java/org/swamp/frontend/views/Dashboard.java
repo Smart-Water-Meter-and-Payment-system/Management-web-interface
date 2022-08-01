@@ -1,6 +1,7 @@
 package org.swamp.frontend.views;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
@@ -16,6 +17,7 @@ import org.sers.webutils.server.core.utils.ApplicationContextProvider;
 import org.sers.webutils.server.shared.SharedAppData;
 import org.swamp.backend.core.services.CustomerService;
 import org.swamp.backend.core.services.MeterService;
+import org.swamp.backend.core.services.TransactionRecordService;
 import org.swamp.backend.models.security.PermissionConstants;
 import org.swamp.frontend.security.HyperLinks;
 
@@ -48,6 +50,11 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
 	private CustomerService customerService;
 	private int totalCustomers;
 	private int totalSystemAdminCustomers;
+	
+	//getting total money
+	private TransactionRecordService transactionRecordService;
+	private BigDecimal totalMoney;
+	private BigDecimal totalAdminMoney;
     
     @SuppressWarnings("unused")
     private String viewPath;
@@ -58,6 +65,7 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
 		this.userService = ApplicationContextProvider.getBean(UserService.class);
 		this.meterService = ApplicationContextProvider.getBean(MeterService.class);
 		this.customerService = ApplicationContextProvider.getBean(CustomerService.class);
+		this.transactionRecordService = ApplicationContextProvider.getBean(TransactionRecordService.class);
 		
 		this.setTotalSystemAdmins(this.userService.getUsersByRoleName(PermissionConstants.SYSTEM_ADMINISTRATOR).size());
 		this.setTotalHardwareTechnicians(this.userService.getUsersByRoleName(PermissionConstants.HARDWARE_TECHNICIAN).size());
@@ -65,6 +73,8 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
 		this.setTotalMeters(this.meterService.countInstances(this.search));
 		this.setTotalSystemAdminCustomers(this.customerService.getSystemAdminCustomers(loggedinUser).size());
 		this.setTotalSystemAdminMeters(this.meterService.getAdminMeters(loggedinUser).size());
+		this.setTotalMoney(this.transactionRecordService.getTotalMoney());
+		this.setTotalAdminMoney(this.transactionRecordService.getTotalAdminMoney(loggedinUser));
     }
 
 	public User getLoggedinUser() {
@@ -191,5 +201,29 @@ public class Dashboard extends WebAppExceptionHandler implements Serializable {
 
 	public void setTotalSystemAdminCustomers(int totalSystemAdminCustomers) {
 		this.totalSystemAdminCustomers = totalSystemAdminCustomers;
+	}
+
+	public TransactionRecordService getTransactionRecordService() {
+		return transactionRecordService;
+	}
+
+	public void setTransactionRecordService(TransactionRecordService transactionRecordService) {
+		this.transactionRecordService = transactionRecordService;
+	}
+
+	public BigDecimal getTotalMoney() {
+		return totalMoney;
+	}
+
+	public void setTotalMoney(BigDecimal totalMoney) {
+		this.totalMoney = totalMoney;
+	}
+
+	public BigDecimal getTotalAdminMoney() {
+		return totalAdminMoney;
+	}
+
+	public void setTotalAdminMoney(BigDecimal totalAdminMoney) {
+		this.totalAdminMoney = totalAdminMoney;
 	}
 }

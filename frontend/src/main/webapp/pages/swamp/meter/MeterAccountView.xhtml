@@ -43,26 +43,44 @@
 
 										<p:accordionPanel prependId="false" activeIndex="false">
 											<p:tab title="Search, Add New Rate">
-												<div class="ui-g-12 ui-lg-4">
-													<div class="ui-g-12 ui-lg-12">
+												<div class="card p-shadow-1" style="height: 70px;">
+													<div class="ui-g-12" style="display: flex;">
 														<p:inputText id="waterChargeRateSearchField"
 															required="false" placeholder="Search Term"
-															styleClass=" Wid100"
+															styleClass=" Wid100" style="margin-left: 5px"
 															actionListener="#{meterAccountView.reloadWaterChargeRateView()}"
 															value="#{meterAccountView.waterChargeRateSearchTerm}" />
-													</div>
-												</div>
 
-												<div class="ui-g-12 ui-lg-3">
-													<div class="ui-g-12 ui-lg-12"></div>
-												</div>
+														<p:inputNumber id="searchCharge"
+															placeholder="Search Charge" style="margin-left: 5px"
+															actionListener="#{meterAccountView.reloadWaterChargeRateView()}"
+															value="#{meterAccountView.searchCharge}" symbol=" UGX"
+															symbolPosition="s" padControl="false"
+															thousandSeparator="," required="true"
+															styleClass=" Wid100" />
 
-												<div class="ui-g-12 ui-lg-3">
-													<div class="ui-g-12 ui-lg-12">
+														<p:inputNumber id="searchWaterVolume"
+															placeholder="Search Water Volume"
+															style="margin-left: 5px"
+															actionListener="#{meterAccountView.reloadWaterChargeRateView()}"
+															value="#{meterAccountView.searchWaterVolume}"
+															symbol=" litre(s)" symbolPosition="s" padControl="false"
+															thousandSeparator="," required="true"
+															styleClass=" Wid100" />
+
+														<p:selectOneMenu id="chargeStatus"
+															style="margin-left: 5px"
+															actionListener="#{meterAccountView.reloadWaterChargeRateView()}"
+															value="#{meterAccountView.selectedChargeRateStatus}">
+															<f:selectItems
+																value="#{meterAccountView.chargeRateStatuses}"
+																required="false" />
+														</p:selectOneMenu>
+
 														<p:commandButton id="waterChargeRateSearchBtn"
 															update="waterChargeRatesTable" title="Search"
 															styleClass="ui-button ui-button-success"
-															icon="fa fa-search"
+															icon="fa fa-search" style="margin-left: 5px"
 															actionListener="#{meterAccountView.reloadWaterChargeRateView()}" />
 
 														<p:commandButton id="waterChargeRateCreateBtn"
@@ -168,25 +186,38 @@
 							<div class="ui-g">
 								<div class="ui-g-12">
 									<div class="ui-g-12 card">
-										<div class="ui-g-12 ui-lg-4">
-											<div class="ui-g-12 ui-lg-12">
+										<div class="card p-shadow-1" style="height: 70px;">
+											<div class="ui-g-12" style="display: flex;">
 												<p:inputText id="customersSearchField" required="false"
 													placeholder="Search Term" styleClass=" Wid100"
 													actionListener="#{meterAccountView.reloadCustomersView()}"
 													value="#{meterAccountView.customerSearchTerm}" />
-											</div>
-										</div>
-
-										<div class="ui-g-12 ui-lg-3">
-											<div class="ui-g-12 ui-lg-12"></div>
-										</div>
-
-										<div class="ui-g-12 ui-lg-3">
-											<div class="ui-g-12 ui-lg-12">
+											
+												<p:inputNumber id="householdBalance"
+													placeholder="Search Balance" size="10" style="margin-left: 5px;"
+													actionListener="#{meterAccountView.reloadCustomersView()}"
+													value="#{meterAccountView.householdBalance}" symbol=" UGX"
+													symbolPosition="s" padControl="false" thousandSeparator=","
+													required="false" />
+									
+												<p:calendar id="fromDate"
+													value="#{meterAccountView.customerFromDate}"
+													pattern="dd-MM-yyyy" readonlyInput="true"
+													style="margin-left: 5px;"
+													placeholder="From Date Registered" size="16"
+													actionListener="#{meterAccountView.reloadCustomersView()}" />
+										
+												<p:calendar id="toDate"
+													value="#{meterAccountView.customerToDate}"
+													pattern="dd-MM-yyyy" readonlyInput="true"
+													style="margin-left: 1px;"
+													placeholder="To Date Registered" size="20"
+													actionListener="#{meterAccountView.reloadCustomersView()}" />
+										
 												<p:commandButton id="customersSearchBtn"
 													update="customersTable" title="Search"
 													styleClass="ui-button ui-button-success"
-													icon="fa fa-search"
+													icon="fa fa-search" style="margin-left: 5px;"
 													actionListener="#{meterAccountView.reloadCustomersView()}" />
 											</div>
 										</div>
@@ -222,6 +253,10 @@
 														<h:outputText value="#{model.householdBalance}" />
 													</p:column>
 
+													<p:column headerText="Token">
+														<h:outputText value="#{model.token}" />
+													</p:column>
+
 												</p:dataTable>
 
 											</div>
@@ -242,26 +277,26 @@
 							<div class="ui-g">
 								<div class="ui-g-12">
 									<div class="ui-g-12 card">
-										<div class="ui-g-12 ui-lg-4">
-											<div class="ui-g-12 ui-lg-12">
-												<p:inputText id="transactionRecordsSearchField"
-													required="false" placeholder="Search Term"
-													styleClass=" Wid100"
+										<div class="card p-shadow-1" style="height: 70px;">
+											<div class="ui-g-12" style="display: flex;">
+												<p:inputNumber id="amountPaid"
+													placeholder="Search Money Paid"
 													actionListener="#{meterAccountView.reloadTransactionRecordView()}"
-													value="#{meterAccountView.transactionRecordSearchTerm}" />
-											</div>
-										</div>
-
-										<div class="ui-g-12 ui-lg-3">
-											<div class="ui-g-12 ui-lg-12"></div>
-										</div>
-
-										<div class="ui-g-12 ui-lg-3">
-											<div class="ui-g-12 ui-lg-12">
+													value="#{meterAccountView.amountPaid}" symbol=" UGX"
+													symbolPosition="s" padControl="false" thousandSeparator=","
+													required="true" styleClass=" Wid100" />
+										
+												<p:inputNumber id="waterVolumeCollected"
+													placeholder="Search Volume Collected" style="margin-left:5px;"
+													actionListener="#{meterAccountView.reloadTransactionRecordView()}"
+													value="#{meterAccountView.waterVolumeCollected}"
+													symbol=" litre(s)" symbolPosition="s" padControl="false"
+													thousandSeparator="," required="true" styleClass=" Wid100" />
+											
 												<p:commandButton id="transactionRecordsSearchBtn"
 													update="transactionRecordsTable" title="Search"
 													styleClass="ui-button ui-button-success"
-													icon="fa fa-search"
+													icon="fa fa-search" style="margin-left: 5px;"
 													actionListener="#{meterAccountView.reloadTransactionRecordView()}" />
 											</div>
 										</div>
@@ -289,11 +324,11 @@
 													<p:column width="30" headerText="No.">
 														<h:outputText value="#{row + 1}" />
 													</p:column>
-													<p:column headerText="Money Paid">
+													<p:column headerText="Money Paid(UGX)">
 														<h:outputText value="#{model.amountPaid}" />
 													</p:column>
 
-													<p:column headerText="Amount of Water Collected">
+													<p:column headerText="Amount of Water Collected(Litress)">
 														<h:outputText value="#{model.waterVolumeCollected}" />
 													</p:column>
 

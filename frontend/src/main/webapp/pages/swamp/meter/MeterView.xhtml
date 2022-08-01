@@ -18,23 +18,36 @@
 							<div class="ui-g-12" style="display: flex;">
 								<!-- For search term field -->
 								<p:inputText id="searchField" placeholder="Search Term"
-									style="width: 35%;"
 									onkeypress="#{meterView.reloadFilterReset()}"
 									value="#{meterView.searchTerm}" />
-								<p:selectOneMenu id="sortField"
-									style="margin-left: 5px; width: 35%"
-									value="#{meterView.selectedSortField}"
-									converter="sortFieldConverter" var="sortField" effect="fade"
-									autoComplete="true" filter="true" scrollHeight="10"
-									filterMatchMode="startsWith">
-									<f:selectItem itemLabel="--Select Order--" itemValue="#{null}" />
-									<f:selectItems value="#{meterView.sortFields}"
-										var="sortField" itemLabel="#{sortField}"
-										itemValue="#{sortField}" />
-									<p:column>
-										<h:outputText value="#{sortField}" />
-									</p:column>
-								</p:selectOneMenu>
+								<p:inputText id="searchLongitude" placeholder="Longitude"
+									style="margin-left:5px" size="10"
+									onkeypress="#{meterView.reloadFilterReset()}"
+									value="#{meterView.longitude}" />
+								<p:inputText id="searchLatitude" placeholder="Latitude"
+									style="margin-left:5px" size="10"
+									onkeypress="#{meterView.reloadFilterReset()}"
+									value="#{meterView.latitude}" />
+								<p:selectCheckboxMenu id="owners" converter="userConverter"
+									rendered="#{componentRenderer.superAdmin||componentRenderer.hardwareTechnician}"
+									value="#{meterView.selectedUsers}" label="--Search Owners--"
+									filter="true" style="margin-left: 5px"
+									filterMatchMode="contains">
+									<f:selectItems value="#{meterView.loadUsers}" />
+								</p:selectCheckboxMenu>
+								<!-- For from date field -->
+								<p:calendar id="fromDate" value="#{meterView.fromDate}"
+									pattern="dd-MM-yyyy" readonlyInput="true"
+									style="margin-left: 5px"
+									placeholder="From Date Registered" size="15"
+									onkeypress="#{meterView.reloadFilterReset()}" />
+								<!-- For to date field -->
+								<p:calendar id="toDate" value="#{meterView.toDate}"
+									pattern="dd-MM-yyyy" readonlyInput="true"
+									style="margin-left: 1px"
+									placeholder="To Date Registered" size="15"
+									onkeypress="#{meterView.reloadFilterReset()}" />
+
 								<p:commandButton id="searchBtn" update="meterTable"
 									icon="fa fa-search" style="margin-left: 5px;" title="Search"
 									styleClass="ui-button ui-button-success"
@@ -107,6 +120,12 @@
 							
 							<p:column headerText="Latitude">
 								<h:outputText value="#{model.latitude}" />
+							</p:column>
+							
+							<p:column headerText="Date Registered">
+								<h:outputText value="#{model.dateCreated}">
+									<f:convertDateTime pattern="dd MMM, yyyy" />
+								</h:outputText>
 							</p:column>
 
 							<p:column headerText="Action" exportable="false"

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -52,8 +53,11 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 	private List<Meter> meters, selectedMeters = new ArrayList<Meter>();
 	private List<ChargeRateStatus> chargeRateStatuses, selectedChargeRateStatus = new ArrayList<ChargeRateStatus>();
 	private String customerSearchTerm, waterChargeRateSearchTerm, transactionRecordSearchTerm;
-	private BigDecimal charge, waterVolume;
+	private BigDecimal charge, waterVolume, searchCharge, searchWaterVolume, waterVolumeCollected, amountPaid;
 	private Meter meter;
+	
+	private BigDecimal householdBalance;
+	private Date customerFromDate, customerToDate;
 
 	@Override
 	public void beanInit() {
@@ -62,6 +66,10 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 		transactionRecordService = ApplicationContextProvider.getBean(TransactionRecordService.class);
 		meters = ApplicationContextProvider.getBean(MeterService.class).getAllInstances();
 		chargeRateStatuses = Arrays.asList(ChargeRateStatus.values());
+		
+		this.householdBalance = null;
+		this.customerFromDate = this.customerToDate = null;
+		this.searchCharge = this.searchWaterVolume = this.waterVolumeCollected = this.amountPaid = null;
 		
 		resetModal();
 		pageLoadInit();
@@ -85,8 +93,10 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 				if (MeterAccountView.this.model == null)
 					return;
 
-				Search search = CustomSearchUtils.generateSearchObjectForCustomers(customerSearchTerm, selectedSortField, 
-						selectedMeters);
+				selectedMeters.add(MeterAccountView.this.model);
+				
+				Search search = CustomSearchUtils.generateSearchObjectForCustomers(customerSearchTerm, 
+						selectedSortField, selectedMeters, householdBalance, customerFromDate, customerToDate);
 				search.addFilterEqual("meterId", MeterAccountView.this.model);
 				
 				super.setTotalRecords(customerService.countInstances(search));
@@ -116,7 +126,7 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 					return;
 
 				Search search = CustomSearchUtils.generateSearchObjectForWaterChargeRate(waterChargeRateSearchTerm, 
-						selectedSortField, selectedChargeRateStatus);
+						selectedSortField, selectedChargeRateStatus, searchWaterVolume, searchCharge);
 				search.addFilterEqual("meterId", MeterAccountView.this.model);
 				
 				super.setTotalRecords(waterChargeRateService.countInstances(search));
@@ -146,7 +156,7 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 					return;
 
 				Search search = CustomSearchUtils.generateSearchObjectForTransactionRecord(transactionRecordSearchTerm, 
-						selectedSortField);
+						selectedSortField, waterVolumeCollected, amountPaid);
 				search.addFilterEqual("meterId", MeterAccountView.this.model);
 				
 				super.setTotalRecords(transactionRecordService.countInstances(search));
@@ -351,6 +361,62 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 
 	public void setMeter(Meter meter) {
 		this.meter = meter;
+	}
+
+	public BigDecimal getHouseholdBalance() {
+		return householdBalance;
+	}
+
+	public void setHouseholdBalance(BigDecimal householdBalance) {
+		this.householdBalance = householdBalance;
+	}
+
+	public Date getCustomerFromDate() {
+		return customerFromDate;
+	}
+
+	public void setCustomerFromDate(Date customerFromDate) {
+		this.customerFromDate = customerFromDate;
+	}
+
+	public Date getCustomerToDate() {
+		return customerToDate;
+	}
+
+	public void setCustomerToDate(Date customerToDate) {
+		this.customerToDate = customerToDate;
+	}
+
+	public BigDecimal getSearchCharge() {
+		return searchCharge;
+	}
+
+	public void setSearchCharge(BigDecimal searchCharge) {
+		this.searchCharge = searchCharge;
+	}
+
+	public BigDecimal getSearchWaterVolume() {
+		return searchWaterVolume;
+	}
+
+	public void setSearchWaterVolume(BigDecimal searchWaterVolume) {
+		this.searchWaterVolume = searchWaterVolume;
+	}
+
+	public BigDecimal getAmountPaid() {
+		return amountPaid;
+	}
+
+	public void setAmountPaid(BigDecimal amountPaid) {
+		this.amountPaid = amountPaid;
+	}
+
+	public BigDecimal getWaterVolumeCollected() {
+		return waterVolumeCollected;
+	}
+
+	public void setWaterVolumeCollected(BigDecimal waterVolumeCollected) {
+		this.waterVolumeCollected = waterVolumeCollected;
 	}
 	
 }
