@@ -84,7 +84,8 @@ public class CustomSearchUtils {
     
     public static Search generateSearchObjectForMeters(String query, SortField sortField, List<String> userIds, 
     		BigDecimal longitude, BigDecimal latitude, Date fromDate, Date toDate) {
-    	Search search = generateSearchTerms(query, Arrays.asList("countryName", "cityName", "publicIp"));
+//    	Search search = generateSearchTerms(query, Arrays.asList("countryName", "cityName", "publicIp"));
+    	Search search = generateSearchTerms(query, Arrays.asList("userId.firstName", "userId.lastName"));
     	
         //searching for owners
         if(userIds != null && !userIds.isEmpty())

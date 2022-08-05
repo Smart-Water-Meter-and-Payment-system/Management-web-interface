@@ -67,6 +67,7 @@ public class MeterView extends PaginatedTableView<Meter, MeterView, MeterView> {
 		this.latitude = null;
 		this.fromDate = null;
 		this.toDate = null;
+		this.selectedMeter = new Meter();
 		super.setMaximumresultsPerpage(10);
 	}
 	
@@ -95,6 +96,7 @@ public class MeterView extends PaginatedTableView<Meter, MeterView, MeterView> {
 		if(SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SYSTEM_ADMINISTRATOR) && 
 				!SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SUPER_ADMINISTRATOR))
 			this.search.addFilterEqual("userId", SharedAppData.getLoggedInUser());
+		System.out.println(this.fromDate+"======="+this.toDate);
 		super.setTotalRecords(this.meterService.countInstances(search));
 	}
 	

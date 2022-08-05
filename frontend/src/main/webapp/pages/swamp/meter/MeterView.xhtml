@@ -22,11 +22,9 @@
 									value="#{meterView.searchTerm}" />
 								<p:inputText id="searchLongitude" placeholder="Longitude"
 									style="margin-left:5px" size="10"
-									onkeypress="#{meterView.reloadFilterReset()}"
 									value="#{meterView.longitude}" />
 								<p:inputText id="searchLatitude" placeholder="Latitude"
 									style="margin-left:5px" size="10"
-									onkeypress="#{meterView.reloadFilterReset()}"
 									value="#{meterView.latitude}" />
 								<p:selectCheckboxMenu id="owners" converter="userConverter"
 									rendered="#{componentRenderer.superAdmin||componentRenderer.hardwareTechnician}"
@@ -39,18 +37,16 @@
 								<p:calendar id="fromDate" value="#{meterView.fromDate}"
 									pattern="dd-MM-yyyy" readonlyInput="true"
 									style="margin-left: 5px"
-									placeholder="From Date Registered" size="15"
-									onkeypress="#{meterView.reloadFilterReset()}" />
+									placeholder="From Date Registered" size="15" />
 								<!-- For to date field -->
 								<p:calendar id="toDate" value="#{meterView.toDate}"
 									pattern="dd-MM-yyyy" readonlyInput="true"
 									style="margin-left: 1px"
-									placeholder="To Date Registered" size="15"
-									onkeypress="#{meterView.reloadFilterReset()}" />
+									placeholder="To Date Registered" size="15" />
 
 								<p:commandButton id="searchBtn" update="meterTable"
 									icon="fa fa-search" style="margin-left: 5px;" title="Search"
-									styleClass="ui-button ui-button-success"
+									styleClass="ui-button ui-button-success" immediate="true"
 									actionListener="#{meterView.reloadFilterReset()}" />
 
 								<p:commandButton icon="fa fa-plus" process="@this"
