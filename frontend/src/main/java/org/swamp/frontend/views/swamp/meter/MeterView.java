@@ -3,6 +3,7 @@ package org.swamp.frontend.views.swamp.meter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -31,7 +32,6 @@ import org.swamp.frontend.security.HyperLinks;
 import org.swamp.frontend.security.UiUtils;
 
 import com.googlecode.genericdao.search.Search;
-import com.maxmind.geoip2.model.CityResponse;
 
 @ManagedBean(name="meterView")
 @SessionScoped
@@ -44,10 +44,12 @@ public class MeterView extends PaginatedTableView<Meter, MeterView, MeterView> {
 	private SortField selectedSortField;
 	private String searchTerm;
 	private MeterService meterService;
-	private List<User> users, selectedUsers;
+	private List<User> users, selectedUsers, loadUsers;
 	private User selectedUserId;
 	private Meter selectedMeter;
 	private String enteredIP;
+	private BigDecimal longitude, latitude;
+	private Date fromDate, toDate;
 
 	@PostConstruct
 	public void init() {
@@ -56,10 +58,16 @@ public class MeterView extends PaginatedTableView<Meter, MeterView, MeterView> {
 				new SortField("City Desc", "cityName", true)});
 		try {
 			this.users = ApplicationContextProvider.getBean(UserService.class).getUsers();
+			this.loadUsers = ApplicationContextProvider.getBean(UserService.class).getUsers();
 		} catch (OperationFailedException e) {
 			e.printStackTrace();
 		}
 		this.selectedUsers = new ArrayList<User>();
+		this.longitude = null;
+		this.latitude = null;
+		this.fromDate = null;
+		this.toDate = null;
+		this.selectedMeter = new Meter();
 		super.setMaximumresultsPerpage(10);
 	}
 	
@@ -70,7 +78,7 @@ public class MeterView extends PaginatedTableView<Meter, MeterView, MeterView> {
 			userIds.add(user.getId());
 		}
 		this.search = CustomSearchUtils.generateSearchObjectForMeters(searchTerm, selectedSortField, 
-				userIds);
+				userIds, longitude, latitude, fromDate, toDate);
 		if(SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SYSTEM_ADMINISTRATOR) && 
 				!SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SUPER_ADMINISTRATOR))
 			this.search.addFilterEqual("userId", SharedAppData.getLoggedInUser());
@@ -84,10 +92,11 @@ public class MeterView extends PaginatedTableView<Meter, MeterView, MeterView> {
 			userIds.add(user.getId());
 		}
 		this.search = CustomSearchUtils.generateSearchObjectForMeters(searchTerm, selectedSortField, 
-				userIds);
+				userIds, longitude, latitude, fromDate, toDate);
 		if(SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SYSTEM_ADMINISTRATOR) && 
 				!SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SUPER_ADMINISTRATOR))
 			this.search.addFilterEqual("userId", SharedAppData.getLoggedInUser());
+		System.out.println(this.fromDate+"======="+this.toDate);
 		super.setTotalRecords(this.meterService.countInstances(search));
 	}
 	
@@ -220,6 +229,46 @@ public class MeterView extends PaginatedTableView<Meter, MeterView, MeterView> {
 
 	public void setSelectedUserId(User selectedUserId) {
 		this.selectedUserId = selectedUserId;
+	}
+
+	public BigDecimal getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(BigDecimal longitude) {
+		this.longitude = longitude;
+	}
+
+	public BigDecimal getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(BigDecimal latitude) {
+		this.latitude = latitude;
+	}
+
+	public List<User> getLoadUsers() {
+		return loadUsers;
+	}
+
+	public void setLoadUsers(List<User> loadUsers) {
+		this.loadUsers = loadUsers;
+	}
+
+	public Date getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+
+	public Date getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
 	}
 	
 }

@@ -18,23 +18,28 @@
 							<div class="ui-g-12" style="display: flex;">
 								<!-- For search term field -->
 								<p:inputText id="searchField" placeholder="Search Term"
-									style="width: 35%;"
+									size="20"
 									onkeypress="#{customerView.reloadFilterReset()}"
 									value="#{customerView.searchTerm}" />
-								<p:selectOneMenu id="sortField"
-									style="margin-left: 5px; width: 30%"
-									value="#{customerView.selectedSortField}"
-									converter="sortFieldConverter" var="sortField" effect="fade"
-									autoComplete="true" filter="true" scrollHeight="10"
-									filterMatchMode="startsWith">
-									<f:selectItem itemLabel="--Select Order--" itemValue="#{null}" />
-									<f:selectItems value="#{customerView.sortFields}"
-										var="sortField" itemLabel="#{sortField}"
-										itemValue="#{sortField}" />
-									<p:column>
-										<h:outputText value="#{sortField}" />
-									</p:column>
-								</p:selectOneMenu>
+								<!-- For householdBalance field -->
+								<p:inputNumber id="householdBalance" style="margin-left: 5px;"
+									placeholder="Search Balance" size="10"
+									onkeypress="#{customerView.reloadFilterReset()}"
+									value="#{customerView.householdBalance}"
+									symbol=" UGX" symbolPosition="s" padControl="false"
+									thousandSeparator="," required="true" />
+								<!-- For from date field -->
+								<p:calendar id="fromDate" value="#{customerView.fromDate}"
+									pattern="dd-MM-yyyy" readonlyInput="true"
+									style="margin-left: 10px;"
+									placeholder="From Date Registered" size="16"
+									onkeypress="#{customerView.reloadFilterReset()}" />
+								<!-- For to date field -->
+								<p:calendar id="toDate" value="#{customerView.toDate}"
+									pattern="dd-MM-yyyy" readonlyInput="true"
+									style="margin-left: 1px;"
+									placeholder="To Date Registered" size="20"
+									onkeypress="#{customerView.reloadFilterReset()}" />
 								<p:selectCheckboxMenu id="meters"
 									value="#{customerView.selectedMeters}"
 									converter="meterConverter" label="--Select Meters--"
@@ -95,7 +100,7 @@
 							</p:column>
 							
 							<p:column headerText="Balance">
-								<h:outputText value="#{model.householdBalance}"
+								<h:outputText value="#{model.householdBalance.balance}"
 									style="float:right">
 									<f:convertNumber groupingUsed="true" />
 								</h:outputText>
@@ -103,6 +108,12 @@
 							
 							<p:column headerText="Token">
 								<h:outputText value="#{model.token}" />
+							</p:column>
+							
+							<p:column headerText="Date Registered">
+								<h:outputText value="#{model.dateCreated}">
+									<f:convertDateTime pattern="dd MMM, yyyy" />
+								</h:outputText>
 							</p:column>
 
 						</p:dataTable>

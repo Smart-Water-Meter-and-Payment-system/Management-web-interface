@@ -1,7 +1,9 @@
 package org.swamp.backend.core.utils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -80,60 +82,92 @@ public class CustomSearchUtils {
 		return addSortField(sortField, search);
     }
     
-    public static Search generateSearchObjectForMeters(String query, SortField sortField, List<String> userIds) {
-    	Search search = generateSearchTerms(query, Arrays.asList("countryName", "cityName"));
+    public static Search generateSearchObjectForMeters(String query, SortField sortField, List<String> userIds, 
+    		BigDecimal longitude, BigDecimal latitude, Date fromDate, Date toDate) {
+//    	Search search = generateSearchTerms(query, Arrays.asList("countryName", "cityName", "publicIp"));
+    	Search search = generateSearchTerms(query, Arrays.asList("userId.firstName", "userId.lastName"));
     	
         //searching for owners
         if(userIds != null && !userIds.isEmpty())
         	search.addFilterIn("userId.id", userIds);
+        
+        //searching for longitude
+        if(longitude != null && longitude.compareTo(BigDecimal.ZERO)>0)
+        	search.addFilterEqual("longitude", longitude);
+
+        //searching for longitude
+        if(latitude != null && latitude.compareTo(BigDecimal.ZERO)>0)
+        	search.addFilterEqual("latitude", latitude);
+        
+        //fromDate <= x <= toDate
+        //searching for from date
+        if(fromDate != null)
+        	search.addFilterGreaterOrEqual("dateCreated", fromDate);
+        
+        //searching for to date
+        if(toDate != null)
+        	search.addFilterLessOrEqual("dateCreated", toDate);
     	
     	return addSortField(sortField, search);
     }
     
-    public static Search generateSearchObjectForCustomers(String query, SortField sortField, List<Meter> meters) {
-    	Search search = generateSearchTerms(query, Arrays.asList("phoneNumber"));
+    public static Search generateSearchObjectForCustomers(String query, SortField sortField, List<Meter> meters, 
+    		BigDecimal householdBalance, Date fromDate, Date toDate) {
+    	Search search = generateSearchTerms(query, Arrays.asList("phoneNumber", "token"));
     	
         //searching for meters
         if(meters != null && !meters.isEmpty())
         	search.addFilterIn("meterId", meters);
+        
+        //searching for householdBalance
+        if(householdBalance != null && householdBalance.compareTo(BigDecimal.ZERO)>0)
+        	search.addFilterEqual("householdBalance.balance", householdBalance);
+        
+        //fromDate <= x <= toDate
+        //searching for from date
+        if(fromDate != null)
+        	search.addFilterGreaterOrEqual("dateCreated", fromDate);
+
+        //searching for to date
+        if(toDate != null)
+        	search.addFilterLessOrEqual("dateCreated", toDate);
     	
     	return addSortField(sortField, search);
     }
     
     public static Search generateSearchObjectForWaterChargeRate(String query, SortField sortField, 
-    		List<ChargeRateStatus> chargeRateStatus) {
+    		List<ChargeRateStatus> chargeRateStatus, BigDecimal waterVolume, BigDecimal charge) {
     	Search search = generateSearchTerms(query, Arrays.asList(""));
 
     	//searching for chargeRates
     	if(chargeRateStatus != null && !chargeRateStatus.isEmpty())
     		search.addFilterIn("activated", chargeRateStatus);
     	
-    	return addSortField(sortField, search);
-    }
-    
-    public static Search generateSearchObjectForTransactionRecord(String query, SortField sortField) {
-    	Search search = generateSearchTerms(query, Arrays.asList(""));
+    	//searching for water volume
+        if(waterVolume != null && waterVolume.compareTo(BigDecimal.ZERO)>0)
+        	search.addFilterEqual("waterVolume", waterVolume);
+        
+        //searching for charge
+        if(charge != null && charge.compareTo(BigDecimal.ZERO)>0)
+        	search.addFilterEqual("charge", charge);
     	
     	return addSortField(sortField, search);
     }
     
-//    public static Search generateSearchForIntegers(Search search, List<String> selectedIntColumns, int min, int max) {
-//    	if(selectedIntColumns != null) {
-//    		if(selectedIntColumns.size() > 0) {
-//    			for(String name : selectedIntColumns) {
-//    				search.addFilterAnd(Filter.lessOrEqual(name, min), Filter.greaterOrEqual(name, max));
-//    			}
-//    		} else {
-//    			selectedIntColumns = Arrays.asList("eloe", "estimatedCostAssignee", "estimatedCostOrganisation",
-//    					"actualLoe", "actualCostOrganisation", "actualCostAssignee");
-//    			for(String name : selectedIntColumns) {
-//    				search.addFilterAnd(Filter.lessOrEqual(name, min), Filter.greaterOrEqual(name, max));
-//    			}
-//    		}
-//    	}
-//    	return search;
-//    }
+    public static Search generateSearchObjectForTransactionRecord(String query, SortField sortField, 
+    		BigDecimal waterVolumeCollected, BigDecimal amountPaid) {
+    	Search search = generateSearchTerms(query, Arrays.asList(""));
+    	
+    	//searching for water volume collected
+        if(waterVolumeCollected != null && waterVolumeCollected.compareTo(BigDecimal.ZERO)>0)
+        	search.addFilterEqual("waterVolumeCollected", waterVolumeCollected);
 
+        //searching for amount paid
+        if(amountPaid != null && amountPaid.compareTo(BigDecimal.ZERO)>0)
+        	search.addFilterEqual("amountPaid", amountPaid);
+    	
+    	return addSortField(sortField, search);
+    }
 
 }
 

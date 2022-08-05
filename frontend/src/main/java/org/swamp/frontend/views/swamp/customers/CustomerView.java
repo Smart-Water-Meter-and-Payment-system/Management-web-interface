@@ -1,7 +1,9 @@
 package org.swamp.frontend.views.swamp.customers;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -39,6 +41,8 @@ public class CustomerView extends PaginatedTableView<Customer, CustomerView, Cus
 	private MeterService meterService;
 	private CustomerService customerService;
 	private List<Meter> meters, selectedMeters = new ArrayList<Meter>();
+	private BigDecimal householdBalance;
+	private Date fromDate, toDate;
 
 	@PostConstruct
 	public void init() {
@@ -47,13 +51,15 @@ public class CustomerView extends PaginatedTableView<Customer, CustomerView, Cus
 		this.sortFields = Arrays.asList(new SortField[] {new SortField("Phone Number Asc", "phoneNumber", false), 
 				new SortField("Phone Number Desc", "phoneNumber", true)});
 		this.meters = this.meterService.getAllInstances();
+		this.householdBalance = null;
+		this.fromDate = this.toDate = null;
 		super.setMaximumresultsPerpage(10);
 	}
 	
 	@Override
 	public void reloadFromDB(int arg0, int arg1, Map<String, Object> arg2) throws Exception {
 		this.search = CustomSearchUtils.generateSearchObjectForCustomers(searchTerm, selectedSortField, 
-				this.selectedMeters);
+				this.selectedMeters, householdBalance, fromDate, toDate);
 		if(SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SYSTEM_ADMINISTRATOR) && 
 				!SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SUPER_ADMINISTRATOR))
 			this.search.addFilterIn("meterId", this.meterService.getAdminMeters(SharedAppData.getLoggedInUser()));
@@ -63,7 +69,7 @@ public class CustomerView extends PaginatedTableView<Customer, CustomerView, Cus
 	@Override
 	public void reloadFilterReset() {
 		this.search = CustomSearchUtils.generateSearchObjectForCustomers(searchTerm, selectedSortField, 
-				this.selectedMeters);
+				this.selectedMeters, householdBalance, fromDate, toDate);
 		if(SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SYSTEM_ADMINISTRATOR) && 
 				!SharedAppData.getLoggedInUser().hasPermission(PermissionConstants.SUPER_ADMINISTRATOR))
 			this.search.addFilterIn("meterId", this.meterService.getAdminMeters(SharedAppData.getLoggedInUser()));
@@ -144,6 +150,30 @@ public class CustomerView extends PaginatedTableView<Customer, CustomerView, Cus
 
 	public void setCustomerService(CustomerService customerService) {
 		this.customerService = customerService;
+	}
+
+	public BigDecimal getHouseholdBalance() {
+		return householdBalance;
+	}
+
+	public void setHouseholdBalance(BigDecimal householdBalance) {
+		this.householdBalance = householdBalance;
+	}
+
+	public Date getToDate() {
+		return toDate;
+	}
+
+	public void setToDate(Date toDate) {
+		this.toDate = toDate;
+	}
+
+	public Date getFromDate() {
+		return fromDate;
+	}
+
+	public void setFromDate(Date fromDate) {
+		this.fromDate = fromDate;
 	}
 	
 }

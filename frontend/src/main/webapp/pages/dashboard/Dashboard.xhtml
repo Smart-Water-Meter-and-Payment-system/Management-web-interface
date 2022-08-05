@@ -46,7 +46,6 @@
 						componentRenderer.hardwareTechnician)}">
 						<div class="overview-box monthly-sales">
 							<div class="overview-title">Meters Issued</div>
-							<i class="pi pi-arrow-circle-up" />
 							<div class="overview-numbers">
 								<strong>#{dashboard.totalMeters}</strong>
 							</div>
@@ -62,9 +61,7 @@
 						rendered="#{(componentRenderer.administrator||componentRenderer.superAdmin||
 						componentRenderer.hardwareTechnician)}">
 						<div class="overview-box monthly-views">
-							<div class="overview-title">
-								System Admins <i class="pi pi-arrow-circle-down" />
-							</div>
+							<div class="overview-title">System Admins</div>
 							<div class="overview-numbers">
 								<strong>#{dashboard.totalSystemAdmins}</strong>
 							</div>
@@ -79,9 +76,7 @@
 					<p:commandLink value="" immediate="true" process="@this" action="#"
 						rendered="#{(componentRenderer.administrator||componentRenderer.superAdmin)}">
 						<div class="overview-box monthly-users">
-							<div class="overview-title">
-								Hardware Technicians <i class="pi pi-arrow-circle-up" />
-							</div>
+							<div class="overview-title">Hardware Technicians</div>
 							<div class="overview-numbers">
 								<strong>#{dashboard.totalHardwareTechnicians}</strong>
 							</div>
@@ -96,9 +91,7 @@
 						rendered="#{(componentRenderer.administrator||componentRenderer.superAdmin||
 						componentRenderer.hardwareTechnician)}">
 						<div class="overview-box monthly-users">
-							<div class="overview-title">
-								Customers <i class="pi pi-arrow-circle-up" />
-							</div>
+							<div class="overview-title">Customers</div>
 							<div class="overview-numbers">
 								<strong>#{dashboard.totalCustomers}</strong>
 							</div>
@@ -110,10 +103,25 @@
 				</div>
 				<div class="p-col-12 p-md-12 p-lg-3">
 					<p:commandLink value="" immediate="true" process="@this" action="#"
+						rendered="#{(componentRenderer.administrator||componentRenderer.superAdmin)}">
+						<div class="overview-box monthly-users">
+							<div class="overview-title">Money Made</div>
+							<div class="overview-numbers">
+								<strong>#{dashboard.totalMoney}</strong>
+							</div>
+
+							<p:graphicImage name="images/icon-sales.png"
+								library="california-layout" />
+						</div>
+					</p:commandLink>
+				</div>
+			</div>
+			<div class="p-grid">
+				<div class="p-col-12 p-md-12 p-lg-3">
+					<p:commandLink value="" immediate="true" process="@this" action="#"
 						rendered="#{(!componentRenderer.administrator and componentRenderer.systemAdmin)}">
 						<div class="overview-box monthly-sales">
 							<div class="overview-title">My Meters</div>
-							<i class="pi pi-arrow-circle-up" />
 							<div class="overview-numbers">
 								<strong>#{dashboard.totalSystemAdminMeters}</strong>
 							</div>
@@ -127,14 +135,26 @@
 					<p:commandLink value="" immediate="true" process="@this" action="#"
 						rendered="#{(!componentRenderer.administrator and componentRenderer.systemAdmin)}">
 						<div class="overview-box monthly-users">
-							<div class="overview-title">
-								My Customers <i class="pi pi-arrow-circle-up" />
-							</div>
+							<div class="overview-title">My Customers</div>
 							<div class="overview-numbers">
 								<strong>#{dashboard.totalSystemAdminCustomers}</strong>
 							</div>
 
 							<p:graphicImage name="images/icon-users.png"
+								library="california-layout" />
+						</div>
+					</p:commandLink>
+				</div>
+				<div class="p-col-12 p-md-12 p-lg-3">
+					<p:commandLink value="" immediate="true" process="@this" action="#"
+						rendered="#{(!componentRenderer.administrator and componentRenderer.systemAdmin)}">
+						<div class="overview-box monthly-users">
+							<div class="overview-title">Money Made</div>
+							<div class="overview-numbers">
+								<strong>#{dashboard.totalAdminMoney}</strong>
+							</div>
+
+							<p:graphicImage name="images/icon-sales.png"
 								library="california-layout" />
 						</div>
 					</p:commandLink>
