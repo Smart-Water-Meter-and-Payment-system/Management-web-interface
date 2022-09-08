@@ -69,7 +69,7 @@ public class MeterAccountView extends WebFormView<Meter, MeterAccountView, Meter
 		
 		this.householdBalance = null;
 		this.customerFromDate = this.customerToDate = null;
-		this.searchCharge = this.searchWaterVolume = this.waterVolumeCollected = this.amountPaid = null;
+		this.searchCharge = this.searchWaterVolume = this.waterVolumeCollected = this.amountPaid = this.charge = this.waterVolume = null;
 		
 		resetModal();
 		pageLoadInit();

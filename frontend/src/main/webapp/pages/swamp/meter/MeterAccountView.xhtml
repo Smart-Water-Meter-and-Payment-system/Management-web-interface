@@ -145,14 +145,16 @@
 
 												<p:column width="100" styleClass="rightAlign"
 													headerText="Action">
-													<p:commandButton
+													<p:commandButton id="waterChargeRateEditBtn"
+														title="Edit Rate" styleClass="ui-button ui-button-info"
+														icon="fa fa-edit" style="margin-left: 5px"
 														actionListener="#{dialogWaterChargeRate.show}"
-														icon="fa fa-edit" styleClass="ui-button-info">
-														<f:setPropertyActionListener
-															target="#{dialogWaterChargeRate.model}" value="#{model}" />
+														process="@this">
 														<f:setPropertyActionListener
 															target="#{dialogWaterChargeRate.selectedMeter}"
-															value="#{model.meterId}" />
+															value="#{meterAccountView.model}" />
+														<f:setPropertyActionListener value="#{model}"
+															target="#{dialogWaterChargeRate.model}" />
 														<p:ajax event="dialogReturn"
 															listener="#{meterAccountView.getActivatedRate()}"
 															update="waterChargeRatesTable, activatedRate" />
